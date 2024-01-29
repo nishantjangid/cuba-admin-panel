@@ -5,11 +5,13 @@ import { EmailAddress, ForgotPassword, Password, RememberPassword, SignIn } from
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import man from "../assets/images/dashboard/profile.png";
+import Web3 from 'web3'
 
 import CustomizerContext from "../_helper/Customizer";
 import OtherWay from "./OtherWay";
 import { ToastContainer, toast } from "react-toastify";
 import { useAccount,useDisconnect } from 'wagmi'
+import { createAccount } from "../api/integrateConfig";
 const Signin = ({ selected }) => {
   const { address, isConnecting, isDisconnected ,status} = useAccount();  
   const [email, setEmail] = useState("test@gmail.com");
@@ -17,9 +19,12 @@ const Signin = ({ selected }) => {
   const [togglePassword, setTogglePassword] = useState(false);
   const history = useNavigate();
   const { layoutURL } = useContext(CustomizerContext);
+  const [walletAddress, setWalletAddress] = useState("");   //new line added by me
 
   const [value, setValue] = useState(localStorage.getItem("profileURL" || man));
   const [name, setName] = useState(localStorage.getItem("Name"));
+
+  const web3 = new Web3(window.ethereum);    // added web3 to get users address
 
   useEffect(() => {
     localStorage.setItem("profileURL", man);
@@ -45,6 +50,25 @@ const Signin = ({ selected }) => {
       history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
     }
   },[address])
+
+  const handleOnClick = async ()=>{
+    try{
+      await window.ethereum.request({ method : 'eth_requestAccounts'});
+      const userAddress = await web3.eth.getCoinbase();
+      // console.log(`meta mask conntected and the address of the user is  : ${userAddress}`)
+
+      const data = {
+        transactionHash : "0x6df737816d9d21d8ca8a54139af66fb08d45fe9d235e1c779d2b60c5d8035869",
+        address : userAddress,
+        referBy : walletAddress
+      }
+      const response = await createAccount(data);
+      console.log(`response recieved is : ${response}`)
+      console.log(`response message is : ${response.message}`)
+    }catch(error){
+      console.log(`error in handle on click funciton : ${error.message}`)
+    }
+  }
 
   return (
     <Fragment>
@@ -80,6 +104,7 @@ const Signin = ({ selected }) => {
                         name="walletAddress"
                         placeholder="Enter your refferal wallet address"
                         required
+                        onChange={(event) => setWalletAddress(event.target.value)}
                       />
                     </div>
                     <small className="text-muted">Joining Amount: $11</small>
@@ -96,7 +121,7 @@ const Signin = ({ selected }) => {
                     <Link className='link' to={`${process.env.PUBLIC_URL}/pages/authentication/forget-pwd`}>
                       {ForgotPassword}
                     </Link> */}
-                    <w3m-button style={{width:'100%'}}/>
+                    <w3m-button onClick = {handleOnClick} style={{width:'100%'}}/>
                   </div>
                   {/* <OtherWay /> */}
                 </Form>

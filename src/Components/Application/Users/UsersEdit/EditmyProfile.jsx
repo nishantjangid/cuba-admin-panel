@@ -1,13 +1,22 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Btn, H4 } from "../../../../AbstractElements";
 import { useForm } from "react-hook-form";
 import './EditProfile.css'
 import { Row, Col, CardHeader, CardBody, CardFooter, Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import { EditProfile, Company, Username, UsersCountryMenu, AboutMe, UpdateProfile, FirstName, LastName, Address, EmailAddress, PostalCode, Country, City } from '../../../../Constant';
+import Web3 from 'web3'
+import { getUserDetails } from "../../../../api/integrateConfig";
+
 
 const EditMyProfile = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
+    const [userId , setUserId] = useState();
+    const [email, setEmail] = useState('');
+    const [address, setaddress] = useState('');
+    const [joininDate, setJoiningDate] = useState('');
+    const [photo, setPhoto] = useState('');
+    const [ userName, setUserName] = useState('');
 
     const onEditSubmit = (data) => {
         alert(data)
@@ -18,6 +27,19 @@ const EditMyProfile = () => {
         setIsEditMode(!isEditMode);
     }
 
+    const web3 = new Web3(window.ethereum);
+
+    useEffect(()=>{
+        const fetchUserDetails = async()=>{
+                await window.ethereum.request({ method : 'eth_requestAccounts'});
+                // console.log(`tbh local storage address is :${userAddress}`)
+                const userAddress = await web3.eth.getCoinbase();
+                const data = {address : userAddress}
+                const response = await getUserDetails(data);
+                console.log(response)
+        }
+        fetchUserDetails();
+    }, [])
 
     return (
         <Fragment>
