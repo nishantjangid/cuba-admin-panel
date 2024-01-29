@@ -9,8 +9,9 @@ import man from "../assets/images/dashboard/profile.png";
 import CustomizerContext from "../_helper/Customizer";
 import OtherWay from "./OtherWay";
 import { ToastContainer, toast } from "react-toastify";
-
+import { useAccount,useDisconnect } from 'wagmi'
 const Signin = ({ selected }) => {
+  const { address, isConnecting, isDisconnected ,status} = useAccount();  
   const [email, setEmail] = useState("test@gmail.com");
   const [password, setPassword] = useState("test123");
   const [togglePassword, setTogglePassword] = useState(false);
@@ -38,6 +39,13 @@ const Signin = ({ selected }) => {
     }
   };
 
+  useEffect(()=>{
+    if(address){
+      localStorage.setItem("login", JSON.stringify(true));
+      history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+    }
+  },[address])
+
   return (
     <Fragment>
       <Container fluid={true} className="p-0 login-page">
@@ -46,9 +54,9 @@ const Signin = ({ selected }) => {
             <div className="login-card">
               <div className="login-main login-tab">
                 <Form className="theme-form">
-                  <H4 >{selected === "simpleLogin" ? "" : "Sign In With Simple Login"}</H4>
+                  <H4 >{selected === "simpleLogin" ? "" : "Sign In With Wallet Login"}</H4>
                   <P>{"Enter your email & password to login"}</P>
-                  <FormGroup>
+                  {/* <FormGroup>
                     <Label className="col-form-label">{EmailAddress}</Label>
                     <Input className="form-control" type="email" onChange={(e) => setEmail(e.target.value)} value={email} />
                   </FormGroup>
@@ -60,17 +68,17 @@ const Signin = ({ selected }) => {
                         <span className={togglePassword ? "" : "show"}></span>
                       </div>
                     </div>
-                  </FormGroup>
+                  </FormGroup> */}
                   <FormGroup className="position-relative">
                     <Label className="col-form-label m-0 pt-0">
-                      Wallet Address (Trust Wallet, Metamask)
+                      Refferal Wallet Address (Trust Wallet, Metamask)
                     </Label>
                     <div className="position-relative">
                       <Input
                         className="form-control"
                         type="text"
                         name="walletAddress"
-                        placeholder="Enter your wallet address"
+                        placeholder="Enter your refferal wallet address"
                         required
                       />
                     </div>
@@ -78,7 +86,7 @@ const Signin = ({ selected }) => {
                   </FormGroup>
 
                   <div className="position-relative form-group mb-0">
-                    <div className="checkbox">
+                    {/* <div className="checkbox">
                       <Input id="checkbox1" type="checkbox" />
                       <Label className="text-muted" for="checkbox1">
                         {RememberPassword}
@@ -87,10 +95,10 @@ const Signin = ({ selected }) => {
 
                     <Link className='link' to={`${process.env.PUBLIC_URL}/pages/authentication/forget-pwd`}>
                       {ForgotPassword}
-                    </Link>
+                    </Link> */}
                     <w3m-button style={{width:'100%'}}/>
                   </div>
-                  <OtherWay />
+                  {/* <OtherWay /> */}
                 </Form>
               </div>
             </div>

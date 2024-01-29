@@ -8,9 +8,11 @@ import { LI, UL, Image, P } from "../../../AbstractElements";
 import CustomizerContext from "../../../_helper/Customizer";
 import { Account, Admin, Inbox, LogOut, Taskboard } from "../../../Constant";
 import BasicMenu from "./UserDropdown";
+import { useDisconnect } from 'wagmi'
 
 const UserHeader = () => {
   const history = useNavigate();
+  const { disconnect } = useDisconnect();
   const [profile, setProfile] = useState("");
   const [name, setName] = useState("Emay Walter");
   const { layoutURL } = useContext(CustomizerContext);
@@ -28,7 +30,9 @@ const UserHeader = () => {
     localStorage.removeItem("auth0_profile");
     localStorage.removeItem("Name");
     localStorage.setItem("authenticated", false);
+    disconnect();
     history(`${process.env.PUBLIC_URL}/login`);
+    
   };
 
   const UserMenuRedirect = (redirect) => {
