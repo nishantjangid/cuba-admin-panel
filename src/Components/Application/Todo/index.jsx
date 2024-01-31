@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Plus } from 'react-feather';
 import { Card, CardBody, CardHeader, Col, Container, Input, Row } from 'reactstrap';
 import { Breadcrumbs, H5, Btn } from '../../../AbstractElements';
@@ -8,11 +8,14 @@ import 'jspdf-autotable';
 import { Fade } from 'react-reveal';
 import WidgetsWrapper from '../../Dashboard/Default/WidgetsWraper';
 import SlotActivation from '../../Dashboard/Default/DashBoardWidgets';
+import { fetchSlot } from '../../../api/integrateConfig';
+import { useAccount } from 'wagmi'
 
 const TodoContain = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const { address} = useAccount();
 
 
   const generatePDF = () => {
@@ -33,7 +36,7 @@ const TodoContain = () => {
 
   const [data, setData] = useState(
     [
-      { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
+      { Date: '2005/11/04', Slot: 'Users', Slottype: '$64 (Renew)', transaction: 'user'   },
       { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
       { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
       { Date: '2005/11/10', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
@@ -49,7 +52,27 @@ const TodoContain = () => {
 
 
 
+useEffect(()=>{        //new addition
+  const fetchData = async ()=>{
+    try{
+      // const {address,userId,startDate, endDate} = req.body;
+      let data1 = {
+        address : address,
+        userId : localStorage.getItem("userID"),   //  in order to get user id from this, user must first go to edit profile section because this is where user ID is set to localsotrage otherwise it might throw error
+        startDate : fromDate,
+        endDate : toDate ? toDate : new Date().toISOString().split('T')[0]
+      }
+      console.log(`address is : ${address} , user id is : ${data1.userId} , startDate is : ${data1.startDate} and end date is : ${data1.endDate}`);
+      const response = await fetchSlot(data1)
+      console.log(response.message)
+      console.log(`response recieved is ${response}`)
+    }catch(error){
+      console.log(`error in fetching data from the backend : ${error.message}`)
+    }
+  }
+  fetchData();
 
+}, [fromDate , toDate])
 
 
   const filteredData = data.filter((row) => {

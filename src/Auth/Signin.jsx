@@ -45,30 +45,36 @@ const Signin = ({ selected }) => {
   };
 
   useEffect(()=>{
-    if(address){
-      localStorage.setItem("login", JSON.stringify(true));
-      history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
-    }
-  },[address])
-
-  const handleOnClick = async ()=>{
-    try{
-      await window.ethereum.request({ method : 'eth_requestAccounts'});
-      const userAddress = await web3.eth.getCoinbase();
-      // console.log(`meta mask conntected and the address of the user is  : ${userAddress}`)
-
+    const loginFunc = async (address, walletAddress)=>{
+      if(address){
+        localStorage.setItem("login", JSON.stringify(true));
+        history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+      try{
+      console.log(` the address from the useAccount is fhdlkjhfjdah  : ${address}`);
+      const userAddress = address;
       const data = {
         transactionHash : "0x6df737816d9d21d8ca8a54139af66fb08d45fe9d235e1c779d2b60c5d8035869",
         address : userAddress,
         referBy : walletAddress
       }
       const response = await createAccount(data);
-      console.log(`response recieved is : ${response}`)
-      console.log(`response message is : ${response.message}`)
+      console.log(`response is : ${response.message}`)
+      return response;
     }catch(error){
-      console.log(`error in handle on click funciton : ${error.message}`)
+      console.log(`error in login auth function : ${error.message}`)
     }
+      // localStorage.setItem("address" , address);
   }
+    }
+    // if(address){
+    //   localStorage.setItem("login", JSON.stringify(true));
+    //   history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+    //   const res = loginFunc(address, walletAddress);
+    //   console.log(`res is : ${res.message} and the res data is : ${res.data} and the res is : ${res}`)
+    // }
+    loginFunc(address, walletAddress);
+  },[address])
+  
 
   return (
     <Fragment>
@@ -121,7 +127,7 @@ const Signin = ({ selected }) => {
                     <Link className='link' to={`${process.env.PUBLIC_URL}/pages/authentication/forget-pwd`}>
                       {ForgotPassword}
                     </Link> */}
-                    <w3m-button onClick = {handleOnClick} style={{width:'100%'}}/>
+                    <w3m-button  style={{width:'100%'}}/>
                   </div>
                   {/* <OtherWay /> */}
                 </Form>

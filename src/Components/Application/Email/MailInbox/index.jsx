@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import { Container, Input, Row } from 'reactstrap';
 import { Breadcrumbs } from '../../../../AbstractElements';
 // import DataTable from 'react-data-table-component';
@@ -9,6 +9,8 @@ import { FaSortUp, FaSortDown } from 'react-icons/fa';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import { Fade } from 'react-reveal';
+import { fetchPackage } from '../../../../api/integrateConfig';
+import {useAccount} from 'wagmi'
 
 
 
@@ -17,6 +19,7 @@ const MailInboxContain = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const {address} = useAccount();
 
 
   const generatePDF = () => {
@@ -49,7 +52,25 @@ const MailInboxContain = () => {
 
   const [ascendingOrder, setAscendingOrder] = useState(true);
 
-
+  useEffect(()=>{
+    const fetchAllPackages = async()=>{
+      // const {address,userId,startDate, endDate} = req.body;
+      try{
+        let data1 = {
+          address : address,
+          userId : localStorage.getItem("userID"), // only works if the user has first visited the edi profile section
+          startDate : fromDate,
+          endDate : toDate ? toDate : new Date().toISOString().split('T')[0] 
+        }
+          const response  = await fetchPackage(data1);
+          console.log(`response recieved is : ${response.message}`)
+          console.log(`whole response is : ${response}`)
+      }catch(error){
+        console.log(`error in fetch all packages when hit from the front end : ${error.message}`)
+      }
+    }
+    fetchAllPackages();
+  }, [fromDate, toDate])
 
 
 
