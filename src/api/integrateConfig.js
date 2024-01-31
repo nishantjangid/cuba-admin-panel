@@ -115,7 +115,7 @@ export const buyPackage = async(data)=>{
 export const fetchPackage = async(data)=>{
     return new Promise(async(resolve, reject)=>{
         try{
-            const response = await axiosBase.get('api/users/fetchPackages' , data , {
+            const response = await axiosBase.post('api/users/fetchPackages' , data , {
                 headers : {
                     'Content-Type' : 'application/json'
                 }

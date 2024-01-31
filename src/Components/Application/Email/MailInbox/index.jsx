@@ -38,37 +38,42 @@ const MailInboxContain = () => {
   };
 
 
-  const [data, setData] = useState(
-    [
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '1 Level', package: '$64' },
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '2 Level', package: '$64' },
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '1 Level', package: '$64' },
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '3 Level', package: '$64' },
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '2 Level', package: '$64' },
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '1 Level', package: '$64' },
-      { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '3 Level', package: '$64' },
-    ]
-  )
+  // const [data, setData] = useState(
+  //   [
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '1 Level', package: '$64' },
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '2 Level', package: '$64' },
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '1 Level', package: '$64' },
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '3 Level', package: '$64' },
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '2 Level', package: '$64' },
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '1 Level', package: '$64' },
+  //     { Date: '2005/11/04', Wallet: 'User', transaction: 'user', Amount: '$3740', Remark: '3 Level', package: '$64' },
+  //   ]
+  // )
+
+  const [data , setData] = useState([])
 
   const [ascendingOrder, setAscendingOrder] = useState(true);
 
-  useEffect(()=>{
-    const fetchAllPackages = async()=>{
-      // const {address,userId,startDate, endDate} = req.body;
-      try{
-        let data1 = {
-          address : address,
-          userId : localStorage.getItem("userID"), // only works if the user has first visited the edi profile section
-          startDate : fromDate,
-          endDate : toDate ? toDate : new Date().toISOString().split('T')[0] 
-        }
-          const response  = await fetchPackage(data1);
-          console.log(`response recieved is : ${response.message}`)
-          console.log(`whole response is : ${response}`)
-      }catch(error){
-        console.log(`error in fetch all packages when hit from the front end : ${error.message}`)
+  const fetchAllPackages = async()=>{        //this function returns all the packages and is used inside the useEffect
+    // const {address,userId,startDate, endDate} = req.body;
+    try{
+      let data1 = {
+        address : address,
+        userId : localStorage.getItem("userID"), // only works if the user has first visited the edi profile section
+        startDate : fromDate,
+        endDate : toDate 
+        // ? toDate : new Date().toISOString().split('T')[0] 
       }
+        const response  = await fetchPackage(data1);
+        console.log(`response recieved is : ${response.message}`)
+        console.log(`whole response is : ${response}`)
+        setData(response.result);        // the data is then mapped in the table
+    }catch(error){
+      console.log(`error in fetch all packages when hit from the front end : ${error.message}`)
     }
+  }
+
+  useEffect(()=>{
     fetchAllPackages();
   }, [fromDate, toDate])
 
@@ -226,11 +231,11 @@ const MailInboxContain = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredData.map((row, index) => (
+                          {data.map((row, index) => (
                             <tr key={index}>
-                              <td>{row.Date}</td>
+                              <td>{new Date(row.time).toLocaleString()}</td>
                               <td>{row.package}</td>
-                              <td>{row.transaction}</td>
+                              <td>{row.transactionHash}</td>
                               {/* <td>{row.Wallet}</td>
                               <td>{row.Amount}</td>
                               <td>{row.Remark}</td> */}

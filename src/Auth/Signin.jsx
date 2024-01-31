@@ -12,6 +12,8 @@ import OtherWay from "./OtherWay";
 import { ToastContainer, toast } from "react-toastify";
 import { useAccount,useDisconnect } from 'wagmi'
 import { createAccount } from "../api/integrateConfig";
+
+
 const Signin = ({ selected }) => {
   const { address, isConnecting, isDisconnected ,status} = useAccount();  
   const [email, setEmail] = useState("test@gmail.com");
@@ -24,7 +26,7 @@ const Signin = ({ selected }) => {
   const [value, setValue] = useState(localStorage.getItem("profileURL" || man));
   const [name, setName] = useState(localStorage.getItem("Name"));
 
-  const web3 = new Web3(window.ethereum);    // added web3 to get users address
+
 
   useEffect(() => {
     localStorage.setItem("profileURL", man);
@@ -52,6 +54,7 @@ const Signin = ({ selected }) => {
       try{
       console.log(` the address from the useAccount is fhdlkjhfjdah  : ${address}`);
       const userAddress = address;
+      console.log(`wallet address refer by is : ${walletAddress}`)
       const data = {
         transactionHash : "0x6df737816d9d21d8ca8a54139af66fb08d45fe9d235e1c779d2b60c5d8035869",
         address : userAddress,
@@ -59,7 +62,9 @@ const Signin = ({ selected }) => {
       }
       const response = await createAccount(data);
       console.log(`response is : ${response.message}`)
-      return response;
+      console.log(`user id recieved after loggin in is : ${response.userId}`)
+      localStorage.setItem("userID" ,response.userId);
+      // return response;
     }catch(error){
       console.log(`error in login auth function : ${error.message}`)
     }

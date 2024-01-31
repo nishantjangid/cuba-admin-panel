@@ -53,14 +53,15 @@ const TodoContain = () => {
 
 
 
-  const fetchData = async ()=>{
+  const fetchData = async ()=>{         // this function returns all slots and is used inside the useeffect
     try{
       // console.log(address + "and the user id is " + localStorage.getItem("userID"))
       let data1 = {
         address : address,
         userId : localStorage.getItem("userID"),   //  in order to get user id from this, user must first go to edit profile section because this is where user ID is set to localsotrage otherwise it might throw error
         startDate : fromDate,
-        endDate : toDate ? toDate : new Date().toISOString().split('T')[0]
+        endDate : toDate 
+        // ? toDate : new Date().toISOString().split('T')[0]
       }
       
       const response = await fetchSlot(data1)
@@ -68,7 +69,7 @@ const TodoContain = () => {
       // for(let i = 0; i<response.result.length; i++){
       //   console.log(` all the slots are : ${response.result[i].slot}`)
       // }
-      setData(response.result);
+      setData(response.result);    // the array of rsult is then mapped in the table
     }catch(error){
       console.log(`error in fetching data from the backend : ${error.message}`)
     }
@@ -77,9 +78,9 @@ useEffect(()=>{        //new addition
   fetchData();
 }, [fromDate , toDate])
 
-useEffect(()=>{
-  fetchData();  
-}, [])
+// useEffect(()=>{
+//   fetchData();  
+// }, [])
 
 
   // const filteredData = data.filter((row) => {
