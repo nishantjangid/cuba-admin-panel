@@ -34,58 +34,65 @@ const TodoContain = () => {
   };
 
 
-  const [data, setData] = useState(
-    [
-      { Date: '2005/11/04', Slot: 'Users', Slottype: '$64 (Renew)', transaction: 'user'   },
-      { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
-      { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
-      { Date: '2005/11/10', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
-      { Date: '2008/11/23', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
-      { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
-      { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
-      { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
+  // const [data, setData] = useState(
+  //   [
+  //     { Date: '2005/11/04', Slot: 'Users', Slottype: '$64 (Renew)', transaction: 'user'   },
+  //     { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
+  //     { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
+  //     { Date: '2005/11/10', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
+  //     { Date: '2008/11/23', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
+  //     { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
+  //     { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (New)', transaction: 'user'   },
+  //     { Date: '2005/11/04', Slot: 'User', Slottype: '$64 (Renew)', transaction: 'user'   },
      
-    ]
-  )
+  //   ]
+  // )
+  const [data , setData] = useState([]);
 
   const [ascendingOrder, setAscendingOrder] = useState(true);
 
 
 
-useEffect(()=>{        //new addition
   const fetchData = async ()=>{
     try{
-      // const {address,userId,startDate, endDate} = req.body;
+      // console.log(address + "and the user id is " + localStorage.getItem("userID"))
       let data1 = {
         address : address,
         userId : localStorage.getItem("userID"),   //  in order to get user id from this, user must first go to edit profile section because this is where user ID is set to localsotrage otherwise it might throw error
         startDate : fromDate,
         endDate : toDate ? toDate : new Date().toISOString().split('T')[0]
       }
-      console.log(`address is : ${address} , user id is : ${data1.userId} , startDate is : ${data1.startDate} and end date is : ${data1.endDate}`);
+      
       const response = await fetchSlot(data1)
-      console.log(response.message)
-      console.log(`response recieved is ${response}`)
+      // console.log(`the kst is ${response.result[0].slot}`)
+      // for(let i = 0; i<response.result.length; i++){
+      //   console.log(` all the slots are : ${response.result[i].slot}`)
+      // }
+      setData(response.result);
     }catch(error){
       console.log(`error in fetching data from the backend : ${error.message}`)
     }
   }
+useEffect(()=>{        //new addition
   fetchData();
-
 }, [fromDate , toDate])
 
+useEffect(()=>{
+  fetchData();  
+}, [])
 
-  const filteredData = data.filter((row) => {
-    const rowDate = new Date(row.Date);
-    const fromDateObj = fromDate ? new Date(fromDate) : null;
-    const toDateObj = toDate ? new Date(toDate) : null;
 
-    return (
-      rowDate >= (fromDateObj || rowDate) &&
-      rowDate <= (toDateObj || rowDate) &&
-      row.Date.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  // const filteredData = data.filter((row) => {
+  //   const rowDate = new Date(row.Date);
+  //   const fromDateObj = fromDate ? new Date(fromDate) : null;
+  //   const toDateObj = toDate ? new Date(toDate) : null;
+
+  //   return (
+  //     rowDate >= (fromDateObj || rowDate) &&
+  //     rowDate <= (toDateObj || rowDate) &&
+  //     row.Date.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  // });
 
 
   const handlePrint = () => {
@@ -217,12 +224,12 @@ useEffect(()=>{        //new addition
                           </tr>
                         </thead>
                         <tbody>
-                          {filteredData.map((row, index) => (
+                          {data.map((row, index) => (
                             <tr key={index}>
-                              <td>{row.Date}</td>
-                              <td>{row.Slot}</td>
-                              <td>{row.Slottype}</td>
-                              <td>{row.transaction}</td>
+                              <td>{new Date(row.time).toLocaleString()}</td>
+                              <td>{row.userId}</td>
+                              <td>${row.slot}</td>
+                              <td>{row.transactionHash}</td>
                               {/* <td>{row.Level}</td>
                               <td>{row.package}</td> */}
                             </tr>

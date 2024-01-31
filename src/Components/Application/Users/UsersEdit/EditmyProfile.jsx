@@ -14,7 +14,7 @@ import  {useAccount } from 'wagmi';
 
 
 const EditMyProfile = () => {
-    const { register, handleSubmit, setValue,watch, formState: { errors } } = useForm();
+    const { register, handleSubmit,control, setValue,watch, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
     const { address, isConnecting, isDisconnected ,status} = useAccount(); 
 
@@ -72,6 +72,7 @@ const EditMyProfile = () => {
                 // const userAddress = accounts[0];
                 console.log(`user address is : ${address}`)
                 const data = {address : address}
+                try{
                 const response = await getUserDetails(data);
                 // for (const key in response) {
                     //     if (response.hasOwnProperty(key)) {
@@ -98,6 +99,10 @@ const EditMyProfile = () => {
                 setValue('join_time' , response.userData.join_time)
                 
                 console.log(response)
+                }catch(error){
+                    alert(`You have been logged out! Please log back in again`)
+                    console.log(`error in getuserdetails when in Fnd : ${error.message}`)
+                }
         }
         
         fetchUserDetails();

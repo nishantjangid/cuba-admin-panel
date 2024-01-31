@@ -79,14 +79,14 @@ export const buySlot = async(data)=>{       //working
 }
 
 
-export const fetchSlot = async(data)=>{
+export const fetchSlot = async(data1)=>{
     return new Promise(async(resolve, reject)=>{
         try{
-            const response = await axiosBase.get('api/users/fetchSlots' , data , {
+            const response = await axiosBase.post('api/users/fetchSlots' , data1 ,{
                 headers : {
                     'Content-Type': 'application/json',
                 },
-            });
+            } );
             resolve(response.data);
         }catch(error){
             reject(error);
