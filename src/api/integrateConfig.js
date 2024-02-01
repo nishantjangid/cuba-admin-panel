@@ -41,6 +41,8 @@ export const getUserDetails = async(data)=>{
 export const updateProfile = async(data)=>{
     return new Promise(async(resolve, reject)=>{
         try{
+            console.log(`the data in update profile in axios is ${data}`)
+            console.log(data)
             const formData = new FormData();
             formData.append("address" , data.address);
             formData.append("name",data.username);
@@ -49,11 +51,12 @@ export const updateProfile = async(data)=>{
             formData.append("profilePicture" , data.profilePicture);
             formData.append("mobileNumber" , data.mobileNumber);
 
-            const response = axiosBase.patch('api/users/update' , data  , {
+            const response = await axiosBase.patch('api/users/update' , data  , {
                 headers : {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'multipart/form-data',  //multipart
                 },
             });
+            console.log(`response recieved from the user is : ${response.data}`)
             resolve(response.data);
         }catch(error){
             console.log(`error in uodate profile in integrate api : ${error.message}`);

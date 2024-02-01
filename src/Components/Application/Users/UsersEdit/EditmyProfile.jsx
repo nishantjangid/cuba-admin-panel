@@ -7,6 +7,7 @@ import { EditProfile, Company, Username, UsersCountryMenu, AboutMe, UpdateProfil
 // import Web3 from 'web3'
 import { getUserDetails, updateProfile } from "../../../../api/integrateConfig";
 import  {useAccount } from 'wagmi';
+import Swal from 'sweetalert2';
 
 
 
@@ -16,33 +17,37 @@ import  {useAccount } from 'wagmi';
 const EditMyProfile = () => {
     const { register, handleSubmit,control, setValue,watch, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
-    const { address, isConnecting, isDisconnected ,status} = useAccount(); 
+    const [formData,setFormdata] = useState({
+        name:"",
+        profilePicture:"",
+        email:"",
+        mobileNumber:""
+    })
 
-    // new addition
-    const [userId , setUserId] = useState();
+    console.log(formData," form data")
+    const { address} = useAccount(); 
+
+    
     const [emailId, setEmailId] = useState();
-    const [addressOfUser, setaddressOfUser] = useState('');
-    const [joininDate, setJoiningDate] = useState('');
-    const [profilePicture , setProfilePicture] = useState(null);
-    // const [profilePictureName, setProfilePictureName] = useState(''); 
-    const [ userName, setUserName] = useState('');
+    
     const [sponserId , setSponserId] = useState('')
-    const [mobileNumber , setMobileNumber] = useState();
-    /////
+    
 
-    const onEditSubmit = async (data) => {
-        console.log(`data of the email is : ${data}`)
-        for (const key in data) {
-                if (data.hasOwnProperty(key)) {
-                  console.log(key + ":  fdsfds:  " + data[key]);
-                }
-            }
+    const onEditSubmit = async (e) => {
+        try{
+            e.preventDefault();
+        // console.log(`data of the email is : ${data}`)
+        // console.log(`data of the username is : ${formData.name}`)
+        // console.log("in the sumbit")
+        // for (const key in data) {
+        //         if (data.hasOwnProperty(key)) {
+        //           console.log(key + ":  fdsfds:  " + data[key]);
+        //         }
+        //     }
 
-            if('profilePicture' in data){
-                console.log(`the image is present in the data`)
-            }else{
-                console.log(`not prsent in the`)
-            }
+            // if(!formData.profilePicture){
+            //     console.log('please use profile pic')
+            // }
         // const formData = new FormData();
         // formData.append('profilePicture', profilePicture);
         // // alert(data)
@@ -56,7 +61,20 @@ const EditMyProfile = () => {
         //     profilePicture : formData,
         // }
         // // dataSumbit.profilePicture = profilePicture;
-        // const updateIt = await updateProfile(dataSumbit);
+       
+        const updateIt = await updateProfile(formData);
+        console.log(`uodate in update ir fuciton is : ${updateIt}`)
+        console.log(`updare it text is : ${updateIt.text}`)
+        Swal.fire({
+            icon:"success",
+            title:"SUCCESSFULL",
+            text:"Successfully edited profile",
+          })
+        
+        }catch(error){
+
+            console.log(`error in try catch block in the uodate profile section in handlesubmit : ${error.message}`)
+        }
         // console.log(`update it function has returned me : ${updateIt}`)
     }
 
@@ -80,45 +98,45 @@ const EditMyProfile = () => {
                         //     }
                         // }
                         localStorage.setItem("userID" , response.userData.userId);
-                setaddressOfUser(response.userData.address);
-                setJoiningDate(response.userData.join_time);
-                setUserId(response.userData.userId);
-                setSponserId(response.userData.referBy);
-                setEmailId(response.userData.email);
-                setUserName(response.userData.name);
-                setMobileNumber(response.userData.mobileNumber);
-                setSponserId(response.userData.referBy);
+                // setaddressOfUser(response.userData.address);
+                // setJoiningDate(response.userData.join_time);
+                // setUserId(response.userData.userId);
+                // setSponserId(response.userData.referBy);
+                // setEmailId(response.userData.email);
+                // setUserName(response.userData.name);
+                // setMobileNumber(response.userData.mobileNumber);
+                // setSponserId(response.userData.referBy);
                 // setProfilePictureName(response.userData.profilePicture);
-                console.log(`address of the user is : ${address}`)
-                setValue('email' , response.userData.email);
-                setValue('name' , response.userData.name);
-                setValue('mobileNumber' , response.userData.mobileNumber);
-                setValue('address' , address);
-                setValue('sposerId' , response.userData.referBy);
-                setValue('userId' , response.userData.userId);
-                setValue('join_time' , response.userData.join_time)
-                
+                // console.log(`address of the user is : ${address}`)
+                // setValue('email' , response.userData.email);
+                // setValue('name' , response.userData.name);
+                // setValue('mobileNumber' , response.userData.mobileNumber);
+                // setValue('address' , address);
+                // setValue('sposerId' , response.userData.referBy);
+                // setValue('userId' , response.userData.userId);
+                // setValue('join_time' , response.userData.join_time)
+                setFormdata({...response.userData})
                 console.log(response)
                 }catch(error){
-                    alert(`You have been logged out! Please log back in again`)
+                    // alert(`You have been logged out! Please log back in again`)
                     console.log(`error in getuserdetails when in Fnd : ${error.message}`)
                 }
         }
         
         fetchUserDetails();
-    }, [address, setValue])
+    }, [address])   // might add setValue here too
 
-    const handleFileChange = (e)=>{
-        const file = e.target.files[0];
-        setProfilePicture(file);
-        setValue("profilePicture", file);
-        // const fileName = file ? file.name : '';
-        // setProfilePictureName(fileName)
-    }
+    // const handleFileChange = (e)=>{
+    //     const file = e.target.files[0];
+    //     setProfilePicture(file);
+    //     setValue("profilePicture", file);
+    //     // const fileName = file ? file.name : '';
+    //     // setProfilePictureName(fileName)
+    // }
 
     return (
         <Fragment>
-            <Form className="card" onSubmit={handleSubmit(onEditSubmit)}>
+            <Form className="card" onSubmit={onEditSubmit} encType="multipart/form-data" method="POST">
                 <CardHeader>
                     <H4 attrH4={{ className: "card-title mb-0" }}>{EditProfile}</H4>
                     <div className="card-options">
@@ -135,7 +153,7 @@ const EditMyProfile = () => {
                         <Col sm="6" md="6">
                             <FormGroup> <Label className="form-label" style={{ color: '#BEBFC2' }}>{Username}</Label>
                             {/* value={userName} onChange={(e)=>setUserName(e.target.value)} */}
-                                <Input style={{ color: '#BEBFC2' }}  className="form-control" type="text" placeholder="Username" {...register('name', { required: true })} defaultValue={watch('name')}  /><span style={{ color: "red" }}>{errors.Username && 'Username is required'} </span>
+                                <Input style={{ color: '#BEBFC2' }}  className="form-control" type="text" placeholder="Username" value={formData.name} onChange={(e)=>setFormdata((prev)=>({...prev,name:e.target.value}))} /><span style={{ color: "red" }}>{errors.Username && 'Username is required'} </span>
                             </FormGroup>
                         </Col>
 
@@ -151,7 +169,7 @@ const EditMyProfile = () => {
                                     type="text"
                                     placeholder="User ID"
                                     {...register('userId', { required: true })}
-                                    value={watch('userId')}
+                                    value={watch('userId')}   // it is set to value so that the user is unable to edit it
                                     readOnly
                                 />
                                 <span style={{ color: "red" }}>{errors.EmailAddress && ' User ID is required'} </span>
@@ -165,7 +183,7 @@ const EditMyProfile = () => {
                             </Label>
                             {/* onChange={(e)=>{handleFileChange(e)}} */}
                             {/* {...register('profilePicture', { required: true })} */}
-                                <Input className="form-control"   type="file" placeholder="Photo" name="profilePicture"    /><span style={{ color: "red" }}>{errors.company && 'Photo is required'} </span>
+                                <Input className="form-control"   type="file" placeholder="Photo" name="profilePicture"  onChange={(e)=>setFormdata((prev)=>({...prev,profilePicture:e.target.files[0]}))}    /><span style={{ color: "red" }}>{errors.company && 'Photo is required'} </span>
                             </FormGroup>
                         </Col>
 
@@ -198,7 +216,7 @@ const EditMyProfile = () => {
                                 Email ID{`emailId : ${emailId}`}
                             </Label>
                             {/* value={emailId}  onChange={(e) => setEmailId(e.target.value)} */}
-                                <Input className="form-control"  {...register('email', { required: true })} type="email" placeholder="Email ID" defaultValue={watch('email')} /><span style={{ color: "red" }}>{errors.City && 'Email ID is required'} </span>
+                                <Input className="form-control"  value={formData.email} onChange={(e)=>setFormdata((prev)=>({...prev,email:e.target.value}))} type="email" placeholder="Email ID" defaultValue={watch('email')} /><span style={{ color: "red" }}>{errors.City && 'Email ID is required'} </span>
                             </FormGroup>
                         </Col>
                         <Col sm="6" md="6">
@@ -210,7 +228,7 @@ const EditMyProfile = () => {
                             </Label>
                             {/* {...register("Address", { required: true })}  placeholder = "Sponser Name" */}
                             {/* value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} */}
-                                <Input className="form-control"  type="text" placeholder="Mobile Number" {...register("mobileNumber", { required: true })}  defaultValue={watch('mobileNumber')}  /><span style={{ color: "red" }}>{errors.Address && 'Mobile No. is required'} </span>
+                                <Input className="form-control"  type="text" placeholder="Mobile Number" value={formData.mobileNumber} onChange={(e)=>setFormdata((prev)=>({...prev,mobileNumber:e.target.value}))}  defaultValue={watch('mobileNumber')}  /><span style={{ color: "red" }}>{errors.Address && 'Mobile No. is required'} </span>
                             </FormGroup>
                         </Col>
                         <Col sm="6" md="6">
