@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useRef, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useRef, useState } from 'react';
 import { Card, CardBody, Col, Container, Row } from 'reactstrap';
 import ChatMenu from '../ChatApp/ChatMenu';
 import { Breadcrumbs } from '../../../../AbstractElements';
@@ -11,12 +11,19 @@ import 'jspdf-autotable';
 import { Button, Input, Modal } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { Fade } from 'react-reveal';
+import {useAccount}  from 'wagmi';
+import { fetchReferralList } from '../../../../api/integrateConfig';
 
 const VideoChatContain = () => {
+  const {address} = useAccount();
+  const [data , setData] = useState([]);
+  const [startDate , setStartDate] = useState(new Date("2000-01-01"));
+  const [endDate , setEndDate] = useState(new Date("3000-01-01"));
+
   const [searchTerm, setSearchTerm] = useState('');
   const [searchFromUserName, setSearchFromUserName] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  // const [fromDate, setFromDate] = useState('');
+  // const [toDate, setToDate] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -57,14 +64,14 @@ const VideoChatContain = () => {
   };
 
 
-  const [data, setData] = useState(
-    [
-      {
-        sno: '1', name: 'Tiger Nixon', id: '	#101', SponserID: '61', UserWalletAddress: '	$320,800', SponserWalletAddress: 'male', time: '21:37', wallet: '$2125', joindate: '2023/02/12', Date: '2023/04/12',
-        ReferralIncome: '$12', LevelIncome: '$22', PackageIncome: '$25', SlotIncome: '$20,', TotalIncome: '$5'
-      },
-    ]
-  )
+  // const [data, setData] = useState(
+  //   [
+  //     {
+  //       sno: '1', name: 'Tigers Nixon', id: '	#101', SponserID: '61', UserWalletAddress: '	$320,800', SponserWalletAddress: 'male', time: '21:37', wallet: '$2125', joindate: '2023/02/12', Date: '2023/04/12',
+  //       ReferralIncome: '$12', LevelIncome: '$22', PackageIncome: '$25', SlotIncome: '$20,', TotalIncome: '$5'
+  //     },
+  //   ]
+  // )
 
   const [ascendingOrder, setAscendingOrder] = useState(true);
 
@@ -81,22 +88,40 @@ const VideoChatContain = () => {
 
   const statusOptions = ['Active', 'Inactive', 'Block'];
 
-  const filteredData = data.filter((row) => {
-    const rowDate = new Date(row.Date);
-    const fromDateObj = fromDate ? new Date(fromDate) : null;
-    const toDateObj = toDate ? new Date(toDate) : null;
+  // const filteredData = data.filter((row) => {
+  //   const rowDate = new Date(row.Date);
+  //   const fromDateObj = fromDate ? new Date(fromDate) : null;
+  //   const toDateObj = toDate ? new Date(toDate) : null;
 
-    const statusFilter =
-      selectedStatus === '' ? true : row.status.toLowerCase() === selectedStatus.toLowerCase();
+  //   const statusFilter =
+  //     selectedStatus === '' ? true : row.status.toLowerCase() === selectedStatus.toLowerCase();
 
-    return (
-      statusFilter &&
-      rowDate >= (fromDateObj || rowDate) &&
-      rowDate <= (toDateObj || rowDate) &&
-      row.Date.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      row.name.toLowerCase().includes(searchFromUserName.toLowerCase())
-    );
-  });
+  //   return (
+  //     statusFilter &&
+  //     rowDate >= (fromDateObj || rowDate) &&
+  //     rowDate <= (toDateObj || rowDate) &&
+  //     row.Date.toLowerCase().includes(searchTerm.toLowerCase()) &&
+  //     row.name.toLowerCase().includes(searchFromUserName.toLowerCase())
+  //   );
+  // });
+
+  useEffect(()=>{
+    const fetchListOfReferrals = async()=>{         // returns with all the referral
+      try{
+        let data1 = {
+          address : address,
+          startDate : startDate,
+          endDate : endDate
+        }
+        const response = await fetchReferralList(data1);
+        setData(response.referToUsers);
+
+      }catch(error){
+        console.log(`error in fetching the referral list : ${error.message}`)
+      }
+    }
+    fetchListOfReferrals();
+  }, [startDate, endDate])
 
   const tableRef = useRef(null);
 
@@ -151,8 +176,8 @@ const VideoChatContain = () => {
   const handleReset = () => {
     setSearchFromUserName('');
     setSelectedStatus('');
-    setFromDate('');
-    setToDate('');
+    // setFromDate('');
+    // setToDate('');
   };
 
   const { menuToggle } = useContext(ChatAppContext);
@@ -206,9 +231,9 @@ const VideoChatContain = () => {
                   <h4 className='mb-0'>My Referral</h4>
                   <div className='date-inputs' style={{ display: 'flex', gap: '10px', alignItems: 'center', color: '#96979A' }}>
                     from:-
-                    <Input type='date' onChange={(e) => setFromDate(e.target.value)} />
+                    <Input type='date' onChange={(e) => setStartDate(e.target.value)} />
                     To:-
-                    <Input type='date' onChange={(e) => setToDate(e.target.value)} />
+                    <Input type='date' onChange={(e) => setEndDate(e.target.value)} />
                   </div>
                 </div>
                 <hr />
@@ -236,14 +261,14 @@ const VideoChatContain = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredData.map((row, index) => (
+                      {data.map((row, index) => (
                         <tr key={index}>
-                          <td>{row.sno}</td>
+                          <td>{index+1}</td>
                           <td>{row.name}</td>
-                          <td>{row.id}</td>
-                          <td>{row.UserWalletAddress}</td>
-                          <td>{row.SponserWalletAddress}</td>
-                          <td>{row.SponserID}</td>
+                          <td>{row.userId}</td>
+                          <td>{row.address}</td>
+                          <td>{row.referBy}</td>
+                          <td>row.SponserID</td>
                           {/* <td>{row.wallet}</td> */}
                           {/* <td
                          style={{ cursor: 'pointer' }}
@@ -251,14 +276,14 @@ const VideoChatContain = () => {
                        >
                          {row.WalletAddress}
                        </td> */}
-                          <td>{row.joindate}</td>
+                          <td>{new Date(row.createdAt).toLocaleString()}</td>
                           {/* <td>{row.time}</td> */}
-                          <td>{row.Date}</td>
-                          <td>{row.ReferralIncome}</td>
-                          <td>{row.LevelIncome}</td>
-                          <td>{row.PackageIncome}</td>
-                          <td>{row.SlotIncome}</td>
-                          <td>{row.TotalIncome}</td>
+                          <td>row.Date</td>
+                          <td>row.ReferralIncome</td>
+                          <td>row.LevelIncome</td>
+                          <td>row.PackageIncome</td>
+                          <td>row.SlotIncome</td>
+                          <td>row.TotalIncome</td>
                           {/* <td>
                          <Button color='primary' onClick={() => handleEditClick(row)}>
                            Edit

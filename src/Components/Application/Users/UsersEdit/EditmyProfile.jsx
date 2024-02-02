@@ -98,6 +98,7 @@ const EditMyProfile = () => {
                         //     }
                         // }
                         localStorage.setItem("userID" , response.userData.userId);
+                        // console.log(`storage from the loacl storage is : ${localStorage.getItem("userID")}`)
                 // setaddressOfUser(response.userData.address);
                 // setJoiningDate(response.userData.join_time);
                 // setUserId(response.userData.userId);
@@ -169,7 +170,7 @@ const EditMyProfile = () => {
                                     type="text"
                                     placeholder="User ID"
                                     {...register('userId', { required: true })}
-                                    value={watch('userId')}   // it is set to value so that the user is unable to edit it
+                                    value={formData.userId}   // it is set to value so that the user is unable to edit it
                                     readOnly
                                 />
                                 <span style={{ color: "red" }}>{errors.EmailAddress && ' User ID is required'} </span>
@@ -213,7 +214,7 @@ const EditMyProfile = () => {
 
                             <FormGroup><Label className="form-label" style={{ color: '#BEBFC2' }}>
                                 {/* {City} */}
-                                Email ID{`emailId : ${emailId}`}
+                                Email ID
                             </Label>
                             {/* value={emailId}  onChange={(e) => setEmailId(e.target.value)} */}
                                 <Input className="form-control"  value={formData.email} onChange={(e)=>setFormdata((prev)=>({...prev,email:e.target.value}))} type="email" placeholder="Email ID" defaultValue={watch('email')} /><span style={{ color: "red" }}>{errors.City && 'Email ID is required'} </span>
@@ -249,7 +250,7 @@ const EditMyProfile = () => {
                                 Joining Date
                             </Label>
                             {/* {...register("FirstName", { required: true })} */}
-                                <Input className="form-control" value={watch('join_time')} {...register("join_time", { required: true })} readOnly type="text" placeholder="Joining Date"  /><span style={{ color: "red" }}>{errors.FirstName && 'Jioning Date is required'} </span>
+                                <Input className="form-control" value={new Date(formData.join_time).toLocaleString()} {...register("join_time", { required: true })} readOnly type="text" placeholder="Joining Date"  /><span style={{ color: "red" }}>{errors.FirstName && 'Jioning Date is required'} </span>
                             </FormGroup>
                         </Col>
 

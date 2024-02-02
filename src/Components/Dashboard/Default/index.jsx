@@ -11,6 +11,8 @@ import { IoEyeSharp } from "react-icons/io5";
 import IntegrationNotistack from "./CopySuccsessful";
 import { CiShare1 } from "react-icons/ci";
 import { FaWallet } from "react-icons/fa6";
+import { fetchAllActivities } from "../../../api/integrateConfig";
+import {useAccount} from 'wagmi';
 
 
 
@@ -18,6 +20,8 @@ import { FaWallet } from "react-icons/fa6";
 
 
 const Dashboard = () => {
+  const {address} = useAccount();
+  const [platformData , setPlatformData] = useState([])
 
   const [visibleItems, setVisibleItems] = useState(15); // Number of items to display initially
 
@@ -63,10 +67,10 @@ const Dashboard = () => {
     window.getSelection().removeAllRanges();
   };
 
-  const platformdata = [
+  const platformdata1 = [
     {
       usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
+      newuser: 'New User Joinabcd',
       UserId: '869255',
       jioningtiming: '7 minutes',
       className: 'NewUser'
@@ -205,6 +209,40 @@ const Dashboard = () => {
     { name: 'x3/x4', link: ' 0x5ac...B97' },
     { name: 'x3/x4', link: ' 0x5ac...B97' }
   ]
+
+
+  useEffect(()=>{
+    const fetchListOfActivities = async()=>{
+      try{
+        const activityList = await fetchAllActivities();
+        setPlatformData(activityList.allActivities);
+        // console.log(activityList)
+        // console.log(`activity list is : ${platformData}`)
+
+      }catch(error){
+        console.log(`error in fetching list of activities in useEffect : ${error.message}`)
+      }
+    }
+    fetchListOfActivities();
+
+  }, [])
+
+
+  const formatTimeDifference = (createdAt)=>{
+    const currentDate = new Date();
+    const createdAtDate = new Date(createdAt);
+
+    const timeDifferenceInMilliseconds = currentDate - createdAtDate;
+    const timeDifferenceInSeconds = Math.floor(timeDifferenceInMilliseconds / 1000);
+    const minutes = Math.floor(timeDifferenceInSeconds / 60);
+    if(minutes == 0){
+      return 'Just now'
+    }else if(minutes == '1'){
+      return '1 minute ago'
+    }else{
+      return `${minutes} minutes ago`
+    }
+  }
 
   return (
     <div className="dashboard-container">
@@ -626,18 +664,18 @@ const Dashboard = () => {
               <div className="platform-left-container">
                 <div className="platform-left-box" >
                   <div></div>
-                  {platformdata.slice(0, visibleItems).map((data, index) => (
+                  {platformData.slice(0, visibleItems).map((data, index) => (   //class is currently data.className
                     <div className="table-in-row-1" key={index}>
                       <div className="table-left-div">
                         <div className="table-user-icon" style={{ fontSize: '15px' }}>
-                          {data.usericon}
+                          {/* {data.usericon} */}
                         </div>
-                        <div className={data.className}>
+                        <div className='NewUser'>
 
                           <div className="new-user-heading">
-                            <span>{data.newuser}</span>
+                            <span>{data.activiy}</span>
                           </div>
-                          <div className="ID-box">ID {data.UserId}</div>
+                          <div className="ID-box">ID {data.userId}</div>
                         </div>
                       </div>
 
@@ -645,7 +683,7 @@ const Dashboard = () => {
                         <span>
                           <CiShare1 size={'18px'} style={{ fontWeight: '800' }} />
                         </span>
-                        <span>{data.jioningtiming}</span>
+                        <span>{formatTimeDifference(data.createdAt)}</span>
                       </div>
                     </div>
 
@@ -677,7 +715,7 @@ const Dashboard = () => {
 
 
 
-                  {platformdata.length > visibleItems && (
+                  {platformData.length > visibleItems && (
                     <div className="see-more-div">
                       <div className="see-more-button" onClick={showMoreItems}>
 

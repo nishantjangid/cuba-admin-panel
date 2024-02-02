@@ -99,6 +99,7 @@ export const fetchSlot = async(data1)=>{
 
 
 
+
 export const buyPackage = async(data)=>{
     return new Promise(async (resolve, reject)=>{
         try{
@@ -125,6 +126,59 @@ export const fetchPackage = async(data)=>{
             });
             resolve(response.data)
         }catch(error){
+            reject(error);
+        }
+    })
+}
+
+
+
+export const fetchUsersList = async(data1)=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            const response = await axiosBase.get(`api/users/allusers?startDate=${data1.startDate}&endDate=${data1.endDate}` , {
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
+            })
+            resolve(response.data);
+        }catch(error){
+            console.log(`error in fetch user list in axios config : ${error.message}`);
+            reject(error)
+        }
+    })
+}
+
+
+export const fetchReferralList = async(data1)=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            const response = await axiosBase.get(`api/users/referrals/${data1.address}?startDate=${data1.startDate}&endDate=${data1.endDate}` , {
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
+            });
+            resolve(response.data);
+        }catch(error){
+            console.log(`error in fetch refferal list in axios config : ${error.message}`);
+            reject(error)
+        }
+    })
+}
+
+
+export const fetchAllActivities = async()=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            const response = await axiosBase.get(`api/activities/all` , {
+                headers:{
+                    'Content-Type' : 'application/json'
+                }
+            });
+            resolve(response.data);
+
+        }catch(error){
+            console.log(`error in fetch all activities in axios config : ${error.message}`)
             reject(error);
         }
     })
