@@ -3,7 +3,7 @@ import { walletConnectProvider, EIP6963Connector } from '@web3modal/wagmi1'
 
 import {  configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-import { polygonMumbai,polygon } from 'viem/chains'
+import { bscTestnet,bsc } from 'viem/chains'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
@@ -13,7 +13,7 @@ const projectId = '8944084f691c908709de92b8ce2cf1a5'
 
 // 2. Create wagmiConfig
 const { chains, publicClient } = configureChains(
-  [polygonMumbai,polygon],
+  [bscTestnet,bsc],
   [walletConnectProvider({ projectId }), publicProvider()]
 )
 
@@ -41,6 +41,6 @@ createWeb3Modal({
   projectId,
   chains,
   enableAnalytics: false, // Optional - defaults to your Cloud configuration,
-  defaultChain:polygonMumbai,
+  defaultChain:bscTestnet,
 
 })

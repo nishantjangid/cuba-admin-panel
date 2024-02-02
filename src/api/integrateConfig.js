@@ -4,7 +4,9 @@ import axios from 'axios'
 export const createAccount = async(data)=>{
     return new Promise(async(resolve, reject)=>{
         try{
-            console.log(`in the axios function `)
+            // const formData = new FormData();
+            // formData.append('address',data.address);
+            // formData.append('referBy',data.referBy);
             const response = await axiosBase.post('api/users/create', data, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -12,6 +14,22 @@ export const createAccount = async(data)=>{
             });
             resolve(response.data);
 
+        }catch(error){
+            console.log(`error in create account : ${error.message}`);
+            reject(error)
+        }
+    })
+}
+
+export const updateData = async(data)=>{
+    return new Promise(async(resolve, reject)=>{
+        try{
+            const response = await axiosBase.post('api/users/updateData', data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            resolve(response.data);
         }catch(error){
             console.log(`error in create account : ${error.message}`);
             reject(error)
