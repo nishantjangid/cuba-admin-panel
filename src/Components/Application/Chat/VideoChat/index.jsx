@@ -176,11 +176,18 @@ const VideoChatContain = () => {
   const handleReset = () => {
     setSearchFromUserName('');
     setSelectedStatus('');
+    setStartDate(new Date("2000-01-01"));
+    setEndDate(new Date("3000-01-01"));
     // setFromDate('');
     // setToDate('');
   };
 
   const { menuToggle } = useContext(ChatAppContext);
+
+  let filteredData = data;
+  if (searchFromUserName !== '') {
+    filteredData = data.filter(user => user.name.toLowerCase().includes(searchFromUserName.toLowerCase()));
+  }
   return (
     <Fragment>
       <Breadcrumbs mainTitle='My Referral' parent='User Section' title='My Referral' />
@@ -261,7 +268,7 @@ const VideoChatContain = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.map((row, index) => (
+                      {filteredData.map((row, index) => (
                         <tr key={index}>
                           <td>{index+1}</td>
                           <td>{row.name}</td>

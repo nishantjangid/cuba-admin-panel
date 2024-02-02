@@ -505,8 +505,8 @@ const Dashboard = () => {
                     <div className="empty-div-row">
                       <div className="empty-main-div">
                         <div className="empty-row-1-div">
-                          <div className="empty-div empty-div-2-1"></div>
-                          <div className="empty-div empty-div-1-1">
+                          <div className="empty-div empty-div-2-1"></div>     {/* this is the blue div       */}
+                          <div className="empty-div empty-div-1-1">   {/* this is red part and inside it is the white svg   */}
                             <svg
                               className="fill-current text-white"
                               width="24"
