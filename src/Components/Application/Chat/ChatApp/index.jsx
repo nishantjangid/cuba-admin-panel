@@ -42,7 +42,12 @@ const ChatAppContain = () => {
 
     }
     fetchUserDetails();
-  }, [startDate , endDate])
+  }, [startDate , endDate ])
+
+  let filteredData = data;
+  if (searchFromUserName !== '') {
+    filteredData = data.filter(user => user.name.toLowerCase().includes(searchFromUserName.toLowerCase()));
+  }
 
   const handleWalletClick = (walletAddress) => {
     setSelectedWallet(walletAddress);
@@ -173,6 +178,8 @@ const ChatAppContain = () => {
   const handleReset = () => {
     setSearchFromUserName('');
     setSelectedStatus('');
+    setStartDate(new Date("2000-01-01"))
+    setEndDate(new Date("3000-01-01"))
     // setFromDate('');
     // setToDate('');
   };
@@ -256,7 +263,7 @@ const ChatAppContain = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {data.map((row, index) => (            // to be edited  ....index+1 is set as td for S.no
+                      {filteredData.map((row, index) => (            // to be edited  ....index+1 is set as td for S.no
                         <tr key={index}>
                           <td>{index+1}</td>           
                           <td>{row.name}</td>
