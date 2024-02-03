@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect, useContext } from "react";
 import { Col, Container, Form, FormGroup, Input, Label, Row } from "reactstrap";
 import { Btn, H4, P } from "../AbstractElements";
-import { EmailAddress, ForgotPassword, Password, RememberPassword, SignIn } from "../Constant";
+import { BackgroundColor, EmailAddress, ForgotPassword, Password, RememberPassword, SignIn } from "../Constant";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import man from "../assets/images/dashboard/profile.png";
@@ -10,7 +10,7 @@ import CustomizerContext from "../_helper/Customizer";
 import OtherWay from "./OtherWay";
 import { ToastContainer, toast } from "react-toastify";
 import { useAccount,useDisconnect } from 'wagmi'
-import { createAccount, updateData } from "../api/integrateConfig";
+import { checkAddressExists, createAccount, updateData } from "../api/integrateConfig";
 import { getNetwork } from '@wagmi/core'
 import { ABI, BUSDABI, BUSDcontractAddress, contractAddress } from "../blockchain";
 import { wagmiConfig } from "../walletConfiguration/Config";
@@ -26,8 +26,9 @@ const Signin = ({ selected }) => {
   const history = useNavigate();
   const { layoutURL } = useContext(CustomizerContext);
   const [walletAddress, setWalletAddress] = useState("");   //new line added by me
-
+  const [showForm,setShowForm] = useState(false);
   const [value, setValue] = useState(localStorage.getItem("profileURL" || man));
+  const [isLoading,setLoading] = useState(false);
   const [name, setName] = useState(localStorage.getItem("Name"));
   const {writeAsync:approve  
   } = useContractWrite({
@@ -41,6 +42,44 @@ const Signin = ({ selected }) => {
     address:contractAddress,
     functionName:'invest'    
   }) 
+
+
+  const checkAccountExists = async (account_address) => {
+    try{
+      if(!account_address){
+        return;
+      }
+      let response = await checkAddressExists(account_address);
+      if(response.data){
+        console.log(response.data);
+        if(response.data.isActive){
+          localStorage.setItem("login", JSON.stringify(true));
+          history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+        }else{
+          setShowForm(true);
+        }
+      }else{
+        setShowForm(true);
+      }
+    }catch(err){
+      if(err?.response?.data?.message){
+        Swal.fire({
+          icon:"error",
+          text:err?.response?.data?.message
+        })
+      }else if(err?.response?.data?.error){
+        Swal.fire({
+          icon:"error",
+          text:err?.response?.data?.error
+        })
+      }else if(err.message){
+        Swal.fire({
+          icon:"error",
+          text:err.message
+        })
+      }        
+    }
+  }
 
   const getBalance = async () => {
     if(address){
@@ -56,6 +95,7 @@ const Signin = ({ selected }) => {
         functionName: 'balanceOf',
         args: [address],
       })
+      checkAccountExists(address);
       setBalance(Number(result)/10**Number(decimals));      
     }
   }
@@ -79,6 +119,7 @@ const Signin = ({ selected }) => {
       toast.error("You enter wrong password or username!..");
     }
   };
+
 
   const signin = async () => {
     if(!address){
@@ -109,8 +150,10 @@ const Signin = ({ selected }) => {
         address : address,
         referBy : walletAddress
       }
-      const response = await createAccount(data);
-      if(response.data){        
+      let response = await createAccount(data);
+      
+      if(response.data){     
+      setLoading(true)   
         let decimals = await readContract({
           abi:BUSDABI,
           address: BUSDcontractAddress,
@@ -118,21 +161,47 @@ const Signin = ({ selected }) => {
         })
   
         let amount = 11 * ((10) ** Number(decimals));
-        console.log(amount);
-        let approved = await approve({args:[contractAddress,amount],from:address})
-        let invested = await invest({args:[response.data.refferAddress,response.data.uplineAddress,amount]});
-        
-        response = await updateData({address,referBy:walletAddress,transactionHash:invested.hash,uplineAddresses:response.data.uplineAddress,amount:11})
-        console.log(response);
+        let half = Number(11 / 2);
+        let amounts = Array();
+        for(let i=0;i<response.data.uplineAddress.length;i++){
+          let levelDivide = Number(Number(half) / 11);
+          amounts.push(levelDivide);
+        }
+        console.log(amounts);
+        let totalAmount = amounts.reduce((ac,cur)=>Number(ac)+Number(cur),0);
+        console.log(totalAmount);
+        let adminIncome = Number(half) - Number(totalAmount);
+
+        let approved = await approve({args:[contractAddress,"22000000000000000000"],from:address})
+
+        let amountInWei = Array();
+        amounts.forEach((element,index)=>{
+          amountInWei.push(Number(element) * Number(10**18).toString());
+        })
+        console.log(amounts, " amounts");
+        let adminIncomeWei = (Number(adminIncome) * Number(10 ** 18)).toString();
+        let halfWei = (Number(half) * (10 ** 18)).toString();
+        console.log(halfWei, " halfWei");
+        console.log(adminIncomeWei,"adminIncomeWei");
+        let invested = await invest({args:[response.data.refferAddress,response.data.uplineAddress,amountInWei,halfWei,adminIncomeWei]});
+        setLoading(false);
+        response = await updateData({address,referBy:walletAddress,transactionHash:invested.hash,uplineAddresses:response.data.uplineAddress,amount:11,levelDistribution:amounts})        
         localStorage.setItem("login", JSON.stringify(true));
         history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
       }else{
+      setLoading(false)
         localStorage.setItem("login", JSON.stringify(true));
         history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
       }
       
-    }catch(err){
-      if(err?.response?.data?.error){
+    }catch(err){   
+    setLoading(false)
+      if(err?.response?.data?.message){
+        Swal.fire({
+          icon:"error",
+          text:err?.response?.data?.message
+        })
+      }else if(err?.response?.data?.error){
         Swal.fire({
           icon:"error",
           text:err?.response?.data?.error
@@ -147,31 +216,12 @@ const Signin = ({ selected }) => {
 
   }
 
-  useEffect(()=>{
-    const loginFunc = async (address, walletAddress)=>{
-      if(address){
-        // localStorage.setItem("login", JSON.stringify(true));
-        // history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
-      try{
-      const userAddress = address;
-      const data = {
-        transactionHash : "0x6df737816d9d21d8ca8a54139af66fb08d45fe9d235e1c779d2b60c5d8035869",
-        address : userAddress,
-        referBy : walletAddress
-      }
-      const response = await createAccount(data);
-      localStorage.setItem("userID" ,response.userId);
-      // return response;
-    }catch(error){
-      console.log(`error in login auth function : ${error.message}`)
-    }
-      // localStorage.setItem("address" , address);
-  }
-    }
+  useEffect(()=>{      
     if(address){
       getBalance();
-    }
-    // loginFunc(address, walletAddress);
+    }else{
+      setShowForm(false);
+    }    
   },[address])
   
 
@@ -198,59 +248,81 @@ const Signin = ({ selected }) => {
                       </div>
                     </div>
                   </FormGroup> */}
-                  <FormGroup className="position-relative">
-                    <Label className="col-form-label m-0 pt-0">
-                      Refferal Wallet Address (Trust Wallet, Metamask)
-                    </Label>
-                    
-                    <div className="position-relative">
-                      <Input
-                        className="form-control"
-                        type="text"
-                        name="walletAddress"
-                        placeholder="Enter your refferal wallet address"
-                        required
-                        onChange={(event) => setWalletAddress(event.target.value)}
-                      />
-                    </div>
-                    <small className="text-muted">Joining Amount: $11</small>
-                  </FormGroup>
-                  <div>
-                      <p>Wallet : {status ? status == 'disconnected' ? 'Not Connected' : 'Connected' : 'Not Connected'}</p>
-                      <p>Network : {chain ? chain.name : 'Not Connected'}</p>
-                      <p>Registration : Available</p>
-                      <p>Balance : {balance} USDT</p>
-                      <p>Approved : {status ? status == 'disconnected' ? 'Not Connected' : 'Connected' : 'Not Connected'}</p>
-                    </div>
-                  <div className="position-relative form-group mb-0">
-                    {/* <div className="checkbox">
-                      <Input id="checkbox1" type="checkbox" />
-                      <Label className="text-muted" for="checkbox1">
-                        {RememberPassword}
-                      </Label>
-                    </div>
+                  <w3m-button />
+                  <p style={{marginBottom:"10px"}}></p>
+                  {
+                    showForm &&
+                    <>
+                      <FormGroup className="position-relative">
+                        <Label className="col-form-label m-0 pt-0">
+                          Refferal Wallet Address (Trust Wallet, Metamask)
+                        </Label>
+                        
+                        <div className="position-relative">
+                          <Input
+                            className="form-control"
+                            type="text"
+                            name="walletAddress"
+                            placeholder="Enter your refferal wallet address"
+                            required
+                            onChange={(event) => setWalletAddress(event.target.value)}
+                          />
+                        </div>
+                        <small className="text-muted">Joining Amount: $11</small>
+                      </FormGroup>
+                      <div>
+                          <p>Wallet : {status ? status == 'disconnected' ? 'Not Connected' : 'Connected' : 'Not Connected'}</p>
+                          <p>Network : {chain ? chain.name : 'Not Connected'}</p>
+                          <p>Registration : Available</p>
+                          <p>Balance : {balance} USDT</p>
+                          <p>Approved : {status ? status == 'disconnected' ? 'Not Connected' : 'Connected' : 'Not Connected'}</p>
+                        </div>
+                      <div className="position-relative form-group mb-0">
+                        {/* <div className="checkbox">
+                          <Input id="checkbox1" type="checkbox" />
+                          <Label className="text-muted" for="checkbox1">
+                            {RememberPassword}
+                          </Label>
+                        </div>
 
-                    <Link className='link' to={`${process.env.PUBLIC_URL}/pages/authentication/forget-pwd`}>
-                      {ForgotPassword}
-                    </Link> */}
-                    <w3m-button  style={{width:'100%'}}/>
-                    <p>
-                      {""}
-                      </p>
-                    {/* <FormGroup> */}
-                      <button
-                      type="button"
-                      className="d-block w-100"
-                      onClick={signin}
-                        style={{                          
-                          color: "primary",
-                          type: "submit",
-                        }}
-                      >
-                        Create Account
-                      </button>
-                    {/* </FormGroup>                     */}
-                  </div>
+                        <Link className='link' to={`${process.env.PUBLIC_URL}/pages/authentication/forget-pwd`}>
+                          {ForgotPassword}
+                        </Link> */}                    
+                        <p>
+                          {""}
+                          </p>
+                        {/* <FormGroup> */}
+                          {!isLoading ?
+                          <button
+                          type="button"
+                          
+                          className="d-block w-100"
+                          onClick={signin}
+                            style={{          
+                              border:'none',
+                              padding:'10px 0',
+                              color: "#000",
+                            }}
+                          >
+                            Create Account
+                          </button> : 
+                          <button
+                          type="button"                          
+                          className="d-block w-100"                          
+                            style={{          
+                              border:'none',
+                              padding:'10px 0',
+                              fontWeight:'bold',
+                              color: "#000",
+                            }}
+                          >
+                            Pending...
+                          </button>                           
+                          }
+                        {/* </FormGroup>                     */}
+                      </div>
+                    </>
+                  }
                   {/* <OtherWay /> */}
                 </Form>
               </div>

@@ -24,7 +24,7 @@ export const createAccount = async(data)=>{
 export const updateData = async(data)=>{
     return new Promise(async(resolve, reject)=>{
         try{
-            const response = await axiosBase.post('api/users/updateData', data, {
+            const response = await axiosBase.patch('api/users/updateData', data, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -37,7 +37,21 @@ export const updateData = async(data)=>{
     })
 }
 
-
+export const checkAddressExists = async (address) =>  {
+    return new Promise(async(resolve, reject)=>{
+        try{
+            const response = await axiosBase.get(`api/users/checkUser/${address}`,{
+                headers : {
+                    'Content-Type': 'application/json',
+                },
+            });
+            resolve(response.data);
+        }catch(error){
+            console.log(`error in get user details function intergrate config : ${error.message}`);
+            reject(error)
+        }
+    })  
+}
 
 export const getUserDetails = async(data)=>{
     return new Promise(async(resolve, reject)=>{

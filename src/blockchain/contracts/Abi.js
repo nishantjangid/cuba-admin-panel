@@ -233,9 +233,26 @@ export const contractAbi = [
   },
   {
     inputs: [
+      { internalType: "address", name: "refAffress", type: "address" },
+      {
+        internalType: "address",
+        name: "upgradePackgeAddress",
+        type: "address",
+      },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+    ],
+    name: "buyPackage",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "refferAddress", type: "address" },
       { internalType: "address[]", name: "levelAddresses", type: "address[]" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
+      { internalType: "uint256[]", name: "amount", type: "uint256[]" },
+      { internalType: "uint256", name: "refferIncome", type: "uint256" },
+      { internalType: "uint256", name: "adminIncome", type: "uint256" },
     ],
     name: "invest",
     outputs: [{ internalType: "bool", name: "", type: "bool" }],
