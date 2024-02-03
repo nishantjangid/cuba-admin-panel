@@ -228,21 +228,40 @@ const Dashboard = () => {
   }, [])
 
 
-  const formatTimeDifference = (createdAt)=>{
+  const formatTimeDifference = (createdAt) => {
     const currentDate = new Date();
     const createdAtDate = new Date(createdAt);
 
     const timeDifferenceInMilliseconds = currentDate - createdAtDate;
     const timeDifferenceInSeconds = Math.floor(timeDifferenceInMilliseconds / 1000);
     const minutes = Math.floor(timeDifferenceInSeconds / 60);
-    if(minutes == 0){
-      return 'Just now'
-    }else if(minutes == '1'){
-      return '1 minute ago'
-    }else{
-      return `${minutes} minutes ago`
+
+    if (minutes < 1) {
+        return 'Just now';
+    } else if (minutes < 60) {
+        return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
+    } else {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+
+        if (hours < 24) {
+            return hours === 1 ? `1 hour ago` : `${hours} hours ago`;
+        } else {
+            const days = Math.floor(hours / 24);
+            const remainingHours = hours % 24;
+
+            if (remainingMinutes === 0 && remainingHours === 0) {
+                return days === 1 ? `1 day ago` : `${days} days ago`;
+            } else if (remainingMinutes === 0) {
+                return days === 1 ? `1 day ${remainingHours} hours ago` : `${days} days ${remainingHours} hours ago`;
+            } else if (remainingHours === 0) {
+                return days === 1 ? `1 day ${remainingMinutes} minutes ago` : `${days} days ago`;
+            } else {
+                return days === 1 ? `1 day ${remainingHours} hours ago` : `${days} days ${remainingHours} hours ago`;
+            }
+        }
     }
-  }
+}
 
   return (
     <div className="dashboard-container">

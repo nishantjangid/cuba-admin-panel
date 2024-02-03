@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 import { MyProfile, Bio, Password, Website, Save, EmailAddress } from '../../../../Constant';
 import CustomizerContext from '../../../../_helper/Customizer';
 
+
 const MyProfileEdit = () => {
+  // dotenv.config();
+  // const imageURL = `${process.env.IMAGE_URL}/${imagePath}`;
+  // const imageURL = `http://localhost:5000/images/${imagePath}`;
+  // {imagePath , nameOfUser} as props
+
   const { layoutURL } = useContext(CustomizerContext);
   return (
     <Fragment>
