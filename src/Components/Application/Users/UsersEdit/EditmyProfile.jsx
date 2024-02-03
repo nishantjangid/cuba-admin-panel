@@ -13,8 +13,7 @@ import Swal from 'sweetalert2';
 
 
 
-
-const EditMyProfile = () => {
+const EditMyProfile = ({setNameOfUser,setImagePath }) => {
     const { register, handleSubmit,control, setValue,watch, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
     const [formData,setFormdata] = useState({
@@ -117,6 +116,8 @@ const EditMyProfile = () => {
                 // setValue('userId' , response.userData.userId);
                 // setValue('join_time' , response.userData.join_time)
                 setFormdata({...response.userData})
+                setNameOfUser(response.userData.name);
+                setImagePath(response.userData.profilePicture);
                 console.log(response)
                 }catch(error){
                     // alert(`You have been logged out! Please log back in again`)
