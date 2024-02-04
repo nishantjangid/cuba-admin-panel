@@ -53,14 +53,14 @@ export const checkAddressExists = async (address) =>  {
     })  
 }
 
-export const getUserDetails = async(data)=>{
+export const getUserDetails = async(data)=>{    
     return new Promise(async(resolve, reject)=>{
         try{
             const response = await axiosBase.get(`api/users/userdetails/${data.address}`, {
                 headers : {
                     'Content-Type': 'application/json',
                 },
-            });
+            });                        
             resolve(response.data);
         }catch(error){
             console.log(`error in get user details function intergrate config : ${error.message}`);
@@ -129,10 +129,23 @@ export const fetchSlot = async(data1)=>{
     })
 }
 
+export const updatePackage = async (data) => {
+    return new Promise(async (resolve, reject)=>{
+        try{
+            const response = await axiosBase.patch('api/users/updatePackagedata' , data , {
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
+            });
+            resolve(response.data)
+        }catch(error){
+            reject(error);
+        }
+    })    
+}
 
 
-
-export const buyPackage = async(data)=>{
+export const buyPackages = async(data)=>{
     return new Promise(async (resolve, reject)=>{
         try{
             const response = await axiosBase.post('api/users/buyPackage' , data , {

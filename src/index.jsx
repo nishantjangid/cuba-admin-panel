@@ -6,12 +6,15 @@ import "./i18n";
 import reportWebVitals from "./reportWebVitals";
 import { wagmiConfig } from './walletConfiguration/Config';
 import { WagmiConfig} from 'wagmi'
+import { MyProvider } from "./Context/MyProvider";
 
 const Root = () => {
   return (
     <div className="App">
        <WagmiConfig config={wagmiConfig}>
+        <MyProvider>
         <App />
+        </MyProvider>
        </WagmiConfig>
     </div>
   );

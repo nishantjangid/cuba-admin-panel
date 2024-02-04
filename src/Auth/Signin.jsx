@@ -13,11 +13,15 @@ import { useAccount,useDisconnect } from 'wagmi'
 import { checkAddressExists, createAccount, updateData } from "../api/integrateConfig";
 import { getNetwork } from '@wagmi/core'
 import { ABI, BUSDABI, BUSDcontractAddress, contractAddress } from "../blockchain";
-import { wagmiConfig } from "../walletConfiguration/Config";
 import Swal from 'sweetalert2'
 import { useContractWrite } from 'wagmi'
+import MyContext from "../Context/MyContext";
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const Signin = ({ selected }) => {
-  const { address, isConnecting, isDisconnected ,status} = useAccount(); 
+  const { address,status} = useAccount(); 
   const { chain } = getNetwork();
   const [email, setEmail] = useState("test@gmail.com");
   const [balance,setBalance] = useState(0);
@@ -30,6 +34,7 @@ const Signin = ({ selected }) => {
   const [value, setValue] = useState(localStorage.getItem("profileURL" || man));
   const [isLoading,setLoading] = useState(false);
   const [name, setName] = useState(localStorage.getItem("Name"));
+  const {getUserData} = useContext(MyContext);
   const {writeAsync:approve  
   } = useContractWrite({
     abi:BUSDABI,
@@ -51,7 +56,7 @@ const Signin = ({ selected }) => {
       }
       let response = await checkAddressExists(account_address);
       if(response.data){
-        console.log(response.data);
+        getUserData(account_address)
         if(response.data.isActive){
           localStorage.setItem("login", JSON.stringify(true));
           history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
@@ -143,6 +148,7 @@ const Signin = ({ selected }) => {
         icon:"error",
         text:'Balance should be greater then 11 USDT'
       })
+      return;
     }
 
     try{
@@ -173,7 +179,7 @@ const Signin = ({ selected }) => {
         let adminIncome = Number(half) - Number(totalAmount);
 
         let approved = await approve({args:[contractAddress,"22000000000000000000"],from:address})
-
+        await sleep(5000);
         let amountInWei = Array();
         amounts.forEach((element,index)=>{
           amountInWei.push(Number(element) * Number(10**18).toString());
