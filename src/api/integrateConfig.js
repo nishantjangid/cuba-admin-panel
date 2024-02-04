@@ -228,3 +228,54 @@ export const fetchAllActivities = async()=>{
         }
     })
 }
+
+export const fetchIncomeDetails = async(data1)=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            console.log('in the fucntionssss')
+            const response = await axiosBase.get(`api/users/transactions/${data1.address}`, {
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
+            })
+            resolve(response.data);
+        }catch(error){
+            console.log(`error in fetch income details in axios : ${error.message}`)
+            reject(error)
+        }
+    })
+}
+
+
+export const fetchAllIncomeInfo = async(data1)=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            const response = await axiosBase.get(`/api/activities/dashboard/${data1.address}`, {
+                headers : {
+                    'Content-Type' : 'application/json',
+                }
+            });
+            resolve(response.data);
+
+        }catch(error){
+            console.log(`error in fetch all income info : ${error.message}`);
+        }
+    })
+}
+
+
+
+export const fetchLatestAnnouncement = async()=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            const response = await axiosBase.get('/api/users/announcements' , {
+                headers : {
+                    'Content-Type' : 'application/json',
+                }
+            })
+            resolve(response.data)
+        }catch(error){
+            reject(error)
+        }
+    })
+}

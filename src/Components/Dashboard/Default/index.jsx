@@ -11,7 +11,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import IntegrationNotistack from "./CopySuccsessful";
 import { CiShare1 } from "react-icons/ci";
 import { FaWallet } from "react-icons/fa6";
-import { fetchAllActivities } from "../../../api/integrateConfig";
+import { fetchAllActivities, fetchAllIncomeInfo, fetchLatestAnnouncement } from "../../../api/integrateConfig";
 import {useAccount} from 'wagmi';
 
 
@@ -20,6 +20,13 @@ import {useAccount} from 'wagmi';
 
 
 const Dashboard = () => {
+  const [refferalIncome , setRefferalIncome] = useState();
+  const [levelIncome , setLevelIncome] = useState();
+  const [slotIncome , setSlotIncome] = useState();
+  const [totalIncome , setTotalIncome] = useState();
+  const [totalUsers, setTotalUsers] = useState();
+  const [packageIncome , setPackageIncome] = useState();
+  const [totalTeam , setTotalTeam] = useState();
   const {address} = useAccount();
   const [platformData , setPlatformData] = useState([])
 
@@ -27,6 +34,7 @@ const Dashboard = () => {
 
   const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
+  const [announcement , setAnnouncement] = useState('')
 
   useEffect(() => {
     const handleResize = () => {
@@ -67,136 +75,136 @@ const Dashboard = () => {
     window.getSelection().removeAllRanges();
   };
 
-  const platformdata1 = [
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Joinabcd',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
+  // const platformdata1 = [
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Joinabcd',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
 
 
-  ]
+  // ]
 
   const showMoreItems = () => {
     setVisibleItems(visibleItems + 15); // Increase the number of visible items
@@ -223,7 +231,43 @@ const Dashboard = () => {
         console.log(`error in fetching list of activities in useEffect : ${error.message}`)
       }
     }
+    // fetchListOfActivities();
+
+    const fetchAllIncome = async()=>{
+      // const address = localStorage.getItem("address");
+      let data = {
+        address : address
+      }
+      try{
+      const response = await fetchAllIncomeInfo(data);
+      setTotalIncome(response.data.totalIncome);
+      // setTotalProfit(response.data.totalProfit)
+      setTotalTeam(response.data.totalTeam);
+      setRefferalIncome(response.data.refferalIncome);
+      setPackageIncome(response.data.packageIncome);
+      setSlotIncome(response.data.slotIncome);
+      setLevelIncome(response.data.levelIncome);
+      setTotalTeam(response.data.totalTeam);
+      setTotalUsers(response.data.totalMembers);
+      }catch(error){
+        console.log(`error in fetching all data : ${error.message}`);
+      }
+    
+    }
+
+    const fetchAnnouncement = async()=>{
+      try{
+        const response = await fetchLatestAnnouncement();
+        setAnnouncement(response.statement);
+
+      }catch(error){
+        console.log(`error in fetch announcement : ${error.message}`);
+      }
+    }
+
     fetchListOfActivities();
+    fetchAllIncome();
+    fetchAnnouncement();
 
   }, [])
 
@@ -363,7 +407,7 @@ const Dashboard = () => {
 
                 <div className="first-container-box-left">
                   <b>Team</b>
-                  <h5>27</h5>
+                  <h5>{totalTeam}</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -390,7 +434,7 @@ const Dashboard = () => {
                
                 <div className="first-container-box-left">
                   <b>Total Profit</b>
-                  <h5>27</h5>
+                  <h5>{totalIncome}</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -415,7 +459,7 @@ const Dashboard = () => {
                 </div>
                 <div style={{ width: '80%', paddingLeft: '15px' }}>
                   <marquee className="hurryup" behavior="smooth" direction="left" >
-                    User New For OFF 50% !Up Hurry.
+                    {announcement} 
                     {/* Hurry up! 50% OFF For New User */}
                   </marquee>
                 </div>
@@ -700,7 +744,7 @@ const Dashboard = () => {
 
                       <div className="table-right-div">
                         <span>
-                          <CiShare1 size={'18px'} style={{ fontWeight: '800' }} />
+                          <CiShare1 size={'18px'} style={{ fontWeight: '800', cursor : 'pointer' }} onClick={() => window.open(`https://testnet.bscscan.com/tx/${data.transactionHash}`, '_blank')} />
                         </span>
                         <span>{formatTimeDifference(data.createdAt)}</span>
                       </div>
