@@ -11,6 +11,8 @@ import 'jspdf-autotable';
 import { Fade } from 'react-reveal';
 import { fetchPackage } from '../../../../api/integrateConfig';
 import {useAccount} from 'wagmi'
+import { useContext } from 'react';
+import MyContext from '../../../../Context/MyContext';
 
 
 
@@ -51,15 +53,16 @@ const MailInboxContain = () => {
   // )
 
   const [data , setData] = useState([])
-
+  const {userData} = useContext(MyContext);
   const [ascendingOrder, setAscendingOrder] = useState(true);
 
   const fetchAllPackages = async()=>{        //this function returns all the packages and is used inside the useEffect
     // const {address,userId,startDate, endDate} = req.body;
+    if(!userData.userId) return;
     try{
       let data1 = {
         address : address,
-        userId : localStorage.getItem("userID"), // only works if the user has first visited the edi profile section
+        userId : userData.userId, // only works if the user has first visited the edi profile section
         startDate : fromDate,
         endDate : toDate 
         // ? toDate : new Date().toISOString().split('T')[0] 
@@ -231,7 +234,8 @@ const MailInboxContain = () => {
                           </tr>
                         </thead>
                         <tbody>
-                          {data.map((row, index) => (
+                          {data.length > 0 ? 
+                          data.map((row, index) => (
                             <tr key={index}>
                               <td>{new Date(row.time).toLocaleString()}</td>
                               <td>{row.package}</td>
@@ -240,7 +244,12 @@ const MailInboxContain = () => {
                               <td>{row.Amount}</td>
                               <td>{row.Remark}</td> */}
                             </tr>
-                          ))}
+                          ))
+                          :
+                          <tr>
+                            <td colSpan={3}>No Data Found!</td>
+                          </tr>
+                        }
                         </tbody>
                       </table>
                     </div>
