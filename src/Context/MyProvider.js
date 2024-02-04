@@ -1,15 +1,17 @@
 import { useEffect,useState } from 'react';
 import MyContext from './MyContext';
 import { useAccount } from 'wagmi'
-import { getUserDetails } from '../api/integrateConfig';
+import { checkAddressExists, getUserDetails } from '../api/integrateConfig';
+
 
 export const MyProvider = ({children}) => {
     const { address} = useAccount();
     const [userData,setUserData] = useState([]);
 
+
   const getUserData = async (address) => {
     try{
-      let response = await getUserDetails({address});                
+      let response = await getUserDetails({address});         
       if(response.userData){
           setUserData(response.userData);
       }
@@ -21,7 +23,7 @@ export const MyProvider = ({children}) => {
   useEffect(()=>{
     if(address){      
       (async () => {
-        await getUserData(address);
+        await getUserData(address);      
       })();
     }
   },[address])

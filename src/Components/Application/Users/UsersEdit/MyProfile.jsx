@@ -4,14 +4,16 @@ import { H5, H4, H6, P, Image, Btn } from '../../../../AbstractElements';
 import { Link } from 'react-router-dom';
 import { MyProfile, Bio, Password, Website, Save, EmailAddress } from '../../../../Constant';
 import CustomizerContext from '../../../../_helper/Customizer';
+import MyContext from '../../../../Context/MyContext';
 // import dotenv from 'dotenv'
 // import dotenv from 'dotenv'
 
 
 const MyProfileEdit = ({imagePath, nameOfUser}) => {
+  const {userData} = useContext(MyContext);
   // dotenv.config(); 
   // const imageURL = `${process.env.IMAGE_URL}/${imagePath}`;
-  const imageURL = `http://localhost:5000/images/${imagePath}`;
+  const imageURL = userData ? userData.profilePicture ? process.env.REACT_APP_API_URL+"/image"+userData.profilePicture : "" : `${process.env.REACT_APP_WEBSITE_URL}/images/${imagePath}`;
   // {imagePath , nameOfUser} as props
 
   const { layoutURL } = useContext(CustomizerContext);
@@ -37,10 +39,10 @@ const MyProfileEdit = ({imagePath, nameOfUser}) => {
                   <Image attrImage={{ className: 'img-70 m-0 rounded-circle', alt: '', src: imageURL }} />
                   <div className='media-body'>
                     <Link to={`${process.env.PUBLIC_URL}/app/users/userProfile/${layoutURL}`}>
-                      <H5 attrH5={{ className: 'mb-1' }}>{nameOfUser}</H5>
+                      <H5 attrH5={{ className: 'mb-1' }}>{userData ? userData.name ? userData.name : nameOfUser : nameOfUser}</H5>
                     </Link>
                     <P> <span style={{color:'#BEBFC2'}} >
-                    DESIGNER
+                    {/* DESIGNER */}
                       </span>
                       </P>
                   </div>
