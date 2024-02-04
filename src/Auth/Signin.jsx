@@ -16,6 +16,7 @@ import { ABI, BUSDABI, BUSDcontractAddress, contractAddress } from "../blockchai
 import Swal from 'sweetalert2'
 import { useContractWrite } from 'wagmi'
 import MyContext from "../Context/MyContext";
+import { useSearchParams } from 'react-router-dom'
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -35,6 +36,8 @@ const Signin = ({ selected }) => {
   const [isLoading,setLoading] = useState(false);
   const [name, setName] = useState(localStorage.getItem("Name"));
   const {getUserData} = useContext(MyContext);
+  const [searchParams, setSearchParams] = useSearchParams()
+  
   const {writeAsync:approve  
   } = useContractWrite({
     abi:BUSDABI,
@@ -55,9 +58,10 @@ const Signin = ({ selected }) => {
         return;
       }
       let response = await checkAddressExists(account_address);
+      console.log(response);
       if(response.data){
         getUserData(account_address)
-        if(response.data.isActive){
+        if(response.data.isActive){          
           localStorage.setItem("login", JSON.stringify(true));
           history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
         }else{
@@ -190,8 +194,10 @@ const Signin = ({ selected }) => {
         console.log(halfWei, " halfWei");
         console.log(adminIncomeWei,"adminIncomeWei");
         let invested = await invest({args:[response.data.refferAddress,response.data.uplineAddress,amountInWei,halfWei,adminIncomeWei]});
+        await sleep(5000);
         setLoading(false);
         response = await updateData({address,referBy:walletAddress,transactionHash:invested.hash,uplineAddresses:response.data.uplineAddress,amount:11,levelDistribution:amounts})        
+        getUserData(address);
         localStorage.setItem("login", JSON.stringify(true));
         history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
       }else{
@@ -221,6 +227,13 @@ const Signin = ({ selected }) => {
     }
 
   }
+
+  useEffect(()=>{
+    console.log(searchParams.get('refferal'))
+    if(searchParams.get('refferal')){
+      setWalletAddress(searchParams.get('refferal'))
+    }
+  },[searchParams])
 
   useEffect(()=>{      
     if(address){
@@ -271,6 +284,7 @@ const Signin = ({ selected }) => {
                             name="walletAddress"
                             placeholder="Enter your refferal wallet address"
                             required
+                            value={walletAddress}
                             onChange={(event) => setWalletAddress(event.target.value)}
                           />
                         </div>

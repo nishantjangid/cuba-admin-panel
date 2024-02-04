@@ -8,6 +8,8 @@ import { EditProfile, Company, Username, UsersCountryMenu, AboutMe, UpdateProfil
 import { getUserDetails, updateProfile } from "../../../../api/integrateConfig";
 import  {useAccount } from 'wagmi';
 import Swal from 'sweetalert2';
+import MyContext from "../../../../Context/MyContext";
+import { useContext } from "react";
 
 
 
@@ -16,6 +18,7 @@ import Swal from 'sweetalert2';
 const EditMyProfile = ({setNameOfUser,setImagePath }) => {
     const { register, handleSubmit,control, setValue,watch, formState: { errors } } = useForm();
     const [isEditMode, setIsEditMode] = useState(false);
+    const {getUserData} = useContext(MyContext)
     const [formData,setFormdata] = useState({
         name:"",
         profilePicture:"",
@@ -62,6 +65,7 @@ const EditMyProfile = ({setNameOfUser,setImagePath }) => {
         // // dataSumbit.profilePicture = profilePicture;
        
         const updateIt = await updateProfile(formData);
+        getUserData(address);
         console.log(`uodate in update ir fuciton is : ${updateIt}`)
         console.log(`updare it text is : ${updateIt.text}`)
         Swal.fire({

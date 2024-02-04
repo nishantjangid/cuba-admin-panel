@@ -13,6 +13,8 @@ import { CiShare1 } from "react-icons/ci";
 import { FaWallet } from "react-icons/fa6";
 import { fetchAllActivities, fetchAllIncomeInfo, fetchLatestAnnouncement } from "../../../api/integrateConfig";
 import {useAccount} from 'wagmi';
+import MyContext from "../../../Context/MyContext";
+import { useContext } from "react";
 
 
 
@@ -28,13 +30,14 @@ const Dashboard = () => {
   const [packageIncome , setPackageIncome] = useState();
   const [totalTeam , setTotalTeam] = useState();
   const {address} = useAccount();
+  const {userData} = useContext(MyContext);
   const [platformData , setPlatformData] = useState([])
 
   const [visibleItems, setVisibleItems] = useState(15); // Number of items to display initially
 
   const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
-  const [announcement , setAnnouncement] = useState('')
+console.log(userData);  const [announcement , setAnnouncement] = useState('')
 
   useEffect(() => {
     const handleResize = () => {
@@ -306,7 +309,7 @@ const Dashboard = () => {
         }
     }
 }
-
+console.log(process.env)
   return (
     <div className="dashboard-container">
 
@@ -349,12 +352,12 @@ const Dashboard = () => {
                     <img width={'120px'} src="/images/UnknownUser.webp" alt="" />
                   </div>
                   <div>
-                    <span style={{ color: '#8B9FA8', fontSize: '23px', fontWeight: '800' }}>ID 468</span>
+                    <span style={{ color: '#8B9FA8', fontSize: '23px', fontWeight: '800' }}>{userData ? "ID "+userData.userId : ""}</span>
                   </div>
                   <div className={`see-more ${isSeeMoreVisible ? 'visible' : ''}`}>
 
                     <div>
-                      <span style={{ color: '#black', fontSize: '16px', fontWeight: '600' }}>0xb37e...0868</span>
+                      <span style={{ color: '#black', fontSize: '16px', fontWeight: '600' }}>{address ? address.slice(0,7)+'...'+address.slice(38,48) : "0x0000...00000"}</span>
                     </div>
                     <div style={{ color: 'gray' }}>
                       Invited 01.06.2023 by <span className="ID-box">ID 1</span>
@@ -375,7 +378,7 @@ const Dashboard = () => {
                         <input
                           ref={textToCopyRef}
                           type="text"
-                          value="metablocktechnologies.io"
+                          value={userData ? `${process.env.REACT_APP_WEBSITE_URL}/login?refferal=${address}` : ""}
                           readOnly
                           style={{ color: '#406AFF', fontSize: '18px', fontWeight: '800', border: 'none', outline: 'none', background: 'transparent', width: '250px' }}
                         />
