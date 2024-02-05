@@ -15,7 +15,7 @@ const WishListData = () => {
 
   const MoveToCart = (product, qty) => {
     addToCart(product, qty);
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layoutURL}`);
+    history(`/app/ecommerce/cart/${layoutURL}`);
   };
   var images = require.context('../../../../assets/images', true);
   const dynamicImage = (image) => {

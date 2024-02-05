@@ -23,7 +23,7 @@ const ProductGrid = () => {
 
   const AddToCarts = (item, quantity) => {
     addToCart(item, quantity);
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layoutURL}`);
+    history(`/app/ecommerce/cart/${layoutURL}`);
   };
 
   const onOpenModal = (productId) => {
@@ -32,7 +32,7 @@ const ProductGrid = () => {
   };
 
   const addWishList = () => {
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/wishlist/${layoutURL}`);
+    history(`/app/ecommerce/wishlist/${layoutURL}`);
   };
   var images = require.context("../../../../assets/images", true);
   const dynamicImage = (image) => {
@@ -72,7 +72,7 @@ const ProductGrid = () => {
                         <div className="product-hover">
                           <UL attrUL={{ className: "simple-list d-flex flex-row" }}>
                             <LI attrLI={{ className: "border-0" }}>
-                              {/* <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layoutURL}`}> */}
+                              {/* <Link to={`/app/ecommerce/cart/${layoutURL}`}> */}
                               <Button color="default" onClick={() => AddToCarts(item, quantity)}>
                                 <i className="icon-shopping-cart"></i>
                               </Button>
@@ -84,7 +84,7 @@ const ProductGrid = () => {
                               </Button>
                             </LI>
                             <LI attrLI={{ className: "border-0" }}>
-                              <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/wishlist/${layoutURL}`}>
+                              <Link to={`/app/ecommerce/wishlist/${layoutURL}`}>
                                 <Button color="default" onClick={() => addWishList(item)}>
                                   <i className="icon-heart"></i>
                                 </Button>
@@ -101,7 +101,7 @@ const ProductGrid = () => {
                           <i className="fa fa-star font-warning"></i>
                           <i className="fa fa-star font-warning"></i>
                         </div>
-                        <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/product-page/${layoutURL}/${item.id}`}>
+                        <Link to={`/app/ecommerce/product-page/${layoutURL}/${item.id}`}>
                           <H4>{item.name}</H4>
                         </Link>
 

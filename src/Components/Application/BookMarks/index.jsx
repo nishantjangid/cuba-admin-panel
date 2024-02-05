@@ -38,7 +38,7 @@ const BookmarksContain = () => {
                                   />
                                 </div>
                                 <Media body>
-                                  <Link to={`${process.env.PUBLIC_URL}/app/users/userprofile/${layoutURL}`}>
+                                  <Link to={`/app/users/userprofile/${layoutURL}`}>
                                     <H6 attrH6={{ className: 'f-w-600' }}>{MarkJecno}</H6>
                                   </Link>
                                   <P>{MARKJENCOEMAIL}</P>

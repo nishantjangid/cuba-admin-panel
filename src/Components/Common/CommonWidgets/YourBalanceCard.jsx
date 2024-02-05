@@ -16,7 +16,7 @@ const YourBalanceCard = ({ mainClass }) => {
         <div className='balance-profile'>
           <div className='balance-img'>
             <Image attrImage={{ src: userImage, alt: 'user vector' }} />
-            <Link className='edit-icon' to={`${process.env.PUBLIC_URL}/app/users/profile`}>
+            <Link className='edit-icon' to={`/app/users/profile`}>
               <SvgIcon iconId='pencil' />
             </Link>
           </div>

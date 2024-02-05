@@ -34,7 +34,7 @@ const AllCards = () => {
                 </div>
                 <div className='social-details'>
                   <H5 attrH5={{ className: 'mb-1' }}>
-                    <Link to={`${process.env.PUBLIC_URL}/app/social-app`}>{item.name}</Link>
+                    <Link to={`/app/social-app`}>{item.name}</Link>
                   </H5>
                   <span className='f-light'>{item.email}</span>
                   <SocialLinks />

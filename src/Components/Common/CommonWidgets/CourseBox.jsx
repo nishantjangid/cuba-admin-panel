@@ -17,7 +17,7 @@ const CourseBox = ({ data, mainClass }) => {
           <div>
             <H4 attrH4={{ className: 'mb-0' }}>{data.course}</H4>
             <span className='f-light'>{data.title}</span>
-            <Link className='btn btn-light f-light' to={`${process.env.PUBLIC_URL}/learning/learning-list-view`}>
+            <Link className='btn btn-light f-light' to={`/learning/learning-list-view`}>
               {data.link}
               <span className='ms-2'>
                 <SvgIcon className='fill-icon f-light' iconId='arrowright' />

@@ -13,7 +13,7 @@ const TopCategories = () => {
           </div>
           <div>
             <H6 attrH6={{ className: 'mb-0' }}>
-              <Link to={`${process.env.PUBLIC_URL}/product`}>{item.title}</Link>
+              <Link to={`/product`}>{item.title}</Link>
             </H6>
             <span className='f-light f-12 f-w-500'>({item.subTitle})</span>
           </div>

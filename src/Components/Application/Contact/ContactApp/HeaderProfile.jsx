@@ -12,7 +12,7 @@ const HeaderProfile = () => {
                 <div className="media-size-email">
                     <Image attrImage={{ className: 'me-3 rounded-circle', src: `${require('../../../../assets/images/user/user.png')}`, alt: '' }} /></div>
                 <div className="media-body">
-                    <Link to={`${process.env.PUBLIC_URL}/app/users/userprofile/${layoutURL}`}>
+                    <Link to={`/app/users/userprofile/${layoutURL}`}>
                         <H6 attrH6={{ className: 'f-w-600' }} >{MARKJENCO}</H6>
                     </Link>
                     <P>{MARKJENCOEMAIL}</P>

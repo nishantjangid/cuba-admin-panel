@@ -111,12 +111,12 @@ const CartData = () => {
                     </tr>
                     <tr>
                       <td className="text-end" colSpan="5">
-                        <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/product/${layoutURL}`} className="btn btn-secondary cart-btn-transform">
+                        <Link to={`/app/ecommerce/product/${layoutURL}`} className="btn btn-secondary cart-btn-transform">
                           continue shopping
                         </Link>
                       </td>
                       <td>
-                        <Link className="btn btn-success cart-btn-transform" to={`${process.env.PUBLIC_URL}/app/ecommerce/checkout/${layoutURL}`}>
+                        <Link className="btn btn-success cart-btn-transform" to={`/app/ecommerce/checkout/${layoutURL}`}>
                           check out
                         </Link>
                       </td>

@@ -24,7 +24,7 @@ const PrintComponent = () => {
                 <Btn attrBtn={{ color: 'primary', className: 'me-2', onClick: handlePrint }}>
                     {Print}
                 </Btn>
-                <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/product/${layoutURL}`}>
+                <Link to={`/app/ecommerce/product/${layoutURL}`}>
                     <Btn attrBtn={{ color: 'secondary' }}>{Cancel}</Btn>
                 </Link>
             </Col>

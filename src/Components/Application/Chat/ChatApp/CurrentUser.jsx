@@ -24,7 +24,7 @@ const CurrentUser = () => {
             }}
           />
           <div className='about'>
-            <Link to={`${process.env.PUBLIC_URL}/app/users/profile/${layoutURL}`}>
+            <Link to={`/app/users/profile/${layoutURL}`}>
               <div className='name f-w-600'>{currentUserr.name}</div>
             </Link>
             <div className='status'>{currentUserr.status}</div>

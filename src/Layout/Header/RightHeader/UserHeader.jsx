@@ -49,7 +49,7 @@ const UserHeader = () => {
     localStorage.removeItem("Name");
     localStorage.setItem("authenticated", false);
     disconnect();
-    history(`${process.env.PUBLIC_URL}/login`);
+    history(`/login`);
     
   };
 
@@ -91,7 +91,7 @@ const UserHeader = () => {
       <UL attrUL={{ className: "simple-list profile-dropdown onhover-show-div" }}>
         <LI
           attrLI={{
-            onClick: () => UserMenuRedirect(`${process.env.PUBLIC_URL}/app/users/edit/${layoutURL}`),
+            onClick: () => UserMenuRedirect(`/app/users/edit/${layoutURL}`),
           }}>
           <User />
           <span>{Account} </span>
@@ -116,14 +116,14 @@ export default UserHeader;
 
 {/* <LI
           attrLI={{
-            onClick: () => UserMenuRedirect(`${process.env.PUBLIC_URL}/app/email-app/${layoutURL}`),
+            onClick: () => UserMenuRedirect(`/app/email-app/${layoutURL}`),
           }}>
           <Mail />
           <span>{Inbox}</span>
         </LI> */}
 {/* <LI
           attrLI={{
-            onClick: () => UserMenuRedirect(`${process.env.PUBLIC_URL}/app/todo-app/todo/${layoutURL}`),
+            onClick: () => UserMenuRedirect(`/app/todo-app/todo/${layoutURL}`),
           }}>
           <FileText />
           <span>{Taskboard}</span>

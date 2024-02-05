@@ -12,7 +12,7 @@ const CheckoutTableData = () => {
     const onSubmit = (data) => {
         if (data !== '') {
             alert('You submitted the form and stuff!');
-            history(`${process.env.PUBLIC_URL}/app/ecommerce/invoice/${layoutURL}`);
+            history(`/app/ecommerce/invoice/${layoutURL}`);
         } else {
             errors.alert('add data');
         }

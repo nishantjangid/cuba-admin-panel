@@ -21,7 +21,7 @@ const Profile = () => {
         <a className='setting-primary' href='#javascript'>
           <Settings />
         </a>
-        <Link to={`${process.env.PUBLIC_URL}/app/users/userProfile`}>
+        <Link to={`/app/users/userProfile`}>
           <Image attrImage={{ className: 'img-90 rounded-circle', src: authenticated ? auth0_profile.picture : profile, alt: '' }} />
           <H6 attrH6={{ className: 'mt-3 f-14 f-w-600' }}>{authenticated ? auth0_profile.name : name}</H6>
         </Link>

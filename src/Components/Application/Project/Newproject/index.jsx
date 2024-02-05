@@ -26,7 +26,7 @@ const Newproject = () => {
   const AddProject = (data) => {
     if (data !== '') {
       project.addNewProject(data);
-      history(`${process.env.PUBLIC_URL}/app/project/project-list/${layoutURL}`);
+      history(`/app/project/project-list/${layoutURL}`);
     } else {
       errors.showMessages();
     }
@@ -51,7 +51,7 @@ const Newproject = () => {
                     <Col>
                       <div className='text-end'>
                         <Btn attrBtn={{ color: 'success', className: 'me-3' }}>{Add}</Btn>
-                        <Link to={`${process.env.PUBLIC_URL}/app/project/project-list`}>
+                        <Link to={`/app/project/project-list`}>
                           <Btn attrBtn={{ color: 'danger' }}>{Cancel}</Btn>
                         </Link>
                       </div>

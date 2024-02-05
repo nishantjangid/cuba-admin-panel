@@ -30,7 +30,7 @@ const Project = () => {
                 </Col>
                 <Col md="6">
                   <div className="text-end">
-                    <Link className="btn btn-primary" style={{ color: 'white' }} to={`${process.env.PUBLIC_URL}/app/project/new-project/${layoutURL}`}> <PlusCircle />{CreateNewProject}</Link>
+                    <Link className="btn btn-primary" style={{ color: 'white' }} to={`/app/project/new-project/${layoutURL}`}> <PlusCircle />{CreateNewProject}</Link>
                   </div>
                 </Col>
               </Row>

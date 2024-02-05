@@ -34,12 +34,12 @@ const ProductDetails = () => {
   const singleItem = productItem;
   const addWishList = (product) => {
     addToWishList(product);
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/wishlist/${layoutURL}`);
+    history(`/app/ecommerce/wishlist/${layoutURL}`);
   };
 
   const AddToCarts = (item, quantity) => {
     addToCart(item, quantity);
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layoutURL}`);
+    history(`/app/ecommerce/cart/${layoutURL}`);
   };
 
   const buyProduct = (item, quantity) => {
@@ -121,7 +121,7 @@ const ProductDetails = () => {
                 <i className="fa fa-shopping-basket me-1"></i>
                 {AddToCart}
               </Button>
-              <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/checkout/${layoutURL}`}>
+              <Link to={`/app/ecommerce/checkout/${layoutURL}`}>
                 <Button color="success" className="m-r-10 m-t-10" onClick={() => buyProduct(productss, quantity)}>
                   <i className="fa fa-shopping-cart me-1"></i>
                   {BuyNow}

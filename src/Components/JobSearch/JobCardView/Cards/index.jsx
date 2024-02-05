@@ -30,7 +30,7 @@ const CardsClass = () => {
                         <Image attrImage={{ className: 'img-40 img-fluid m-r-20', src: `${require(`../../../../assets/images/${item.logo}`)}`, alt: '' }} />
                         <div className='media-body'>
                           <H6 attrH6={{ className: 'f-w-600' }}>
-                            <Link to={`${process.env.PUBLIC_URL}/app/jobSearch/job-detail/${layoutURL}`}>{item.job_name}</Link>
+                            <Link to={`/app/jobSearch/job-detail/${layoutURL}`}>{item.job_name}</Link>
                             {item.badgeValue ? <span className='badge badge-primary pull-right'>New</span> : <span className='pull-right'>2 days ago</span>}
                           </H6>
                           <P>

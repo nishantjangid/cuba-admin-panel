@@ -45,7 +45,7 @@ const Email = () => {
                           <Media body className='me-3 rounded-circle img-50' src={user} alt='' />
                         </div>
                         <Media body>
-                          <Link to={`${process.env.PUBLIC_URL}/app/users/userProfile/${layoutURL}`}>
+                          <Link to={`/app/users/userProfile/${layoutURL}`}>
                             <h6 className='f-w-600'>{MARKJENCO}</h6>
                           </Link>
                           <p>{MARKJENCOEMAIL}</p>

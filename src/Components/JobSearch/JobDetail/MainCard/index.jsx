@@ -21,7 +21,7 @@ const MainCard = () => {
                   <H6 attrH6={{ className: 'f-w-600' }}>
                     <a href='#javascript'>Product Designer (UI/UX Designer)</a>
                     <span className='pull-right'>
-                      <Link to={`${process.env.PUBLIC_URL}/app/jobsearch/jobapply/${layoutURL}`}>
+                      <Link to={`/app/jobsearch/jobapply/${layoutURL}`}>
                         <Btn attrBtn={{ className: 'btn btn-sm job-apply-btn', color: 'primary' }}>Apply for this job</Btn>
                       </Link>
                     </span>

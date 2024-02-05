@@ -47,7 +47,7 @@ const ProductModal = (props) => {
   const history = useNavigate();
   const AddToCarts = (item, quantity) => {
     addToCart(item, quantity);
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layoutURL}`);
+    history(`/app/ecommerce/cart/${layoutURL}`);
   };
 
   return (
@@ -104,10 +104,10 @@ const ProductModal = (props) => {
                       </InputGroup>
                     </fieldset>
                     <div className='addcart-btn'>
-                      <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layoutURL}`} className='btn btn-primary me-3' onClick={() => AddToCarts(singleProduct, quantity)}>
+                      <Link to={`/app/ecommerce/cart/${layoutURL}`} className='btn btn-primary me-3' onClick={() => AddToCarts(singleProduct, quantity)}>
                         {AddToCart}
                       </Link>
-                      <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/product-page/${layoutURL}/${singleProduct.id}`} className='btn btn-primary'>
+                      <Link to={`/app/ecommerce/product-page/${layoutURL}/${singleProduct.id}`} className='btn btn-primary'>
                         {ViewDetails}
                       </Link>
                     </div>

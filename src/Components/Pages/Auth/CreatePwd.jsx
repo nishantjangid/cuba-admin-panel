@@ -16,7 +16,7 @@ const CreatePwd = ({ logoClassMain }) => {
               <div className='login-card'>
                 <div>
                   <div>
-                    <Link className={`logo ${logoClassMain ? logoClassMain : ''}`} to={process.env.PUBLIC_URL}>
+                    <Link className={`logo ${logoClassMain ? logoClassMain : ''}`} to={process.env.REACT_APP_PUBLIC_URL}>
                       <Image attrImage={{ className: 'img-fluid for-light', src: logoWhite, alt: 'looginpage' }} />
                       <Image attrImage={{ className: 'img-fluid for-dark', src: logoDark, alt: 'looginpage' }} />
                     </Link>

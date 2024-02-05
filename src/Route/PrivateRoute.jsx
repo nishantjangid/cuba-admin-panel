@@ -10,7 +10,7 @@ const PrivateRoute = () => {
     localStorage.setItem("authenticated", authenticated);
     localStorage.setItem("login", login);
   }, []);
-  return login || authenticated ? <Outlet /> : <Navigate exact to={`${process.env.PUBLIC_URL}/login`} />;
+  return login || authenticated ? <Outlet /> : <Navigate exact to={`/login`} />;
 };
 
 export default PrivateRoute;

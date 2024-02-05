@@ -13,7 +13,7 @@ const CartHeader = () => {
   const layout = id;
   const [cartDropdown, setCartDropDown] = useState(false);
   const RedirectToCart = () => {
-    history(`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layout}`);
+    history(`/app/ecommerce/cart/${layout}`);
   };
   return (
     <li className='cart-nav onhover-dropdown'>
@@ -88,10 +88,10 @@ const CartHeader = () => {
             </h6>
           </li>
           <li className='text-center'>
-            <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/cart/${layout}`} className='d-block mb-3 view-cart f-w-700'>
+            <Link to={`/app/ecommerce/cart/${layout}`} className='d-block mb-3 view-cart f-w-700'>
               {GOTOYOURCART}
             </Link>
-            <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/checkout/${layout}`} className='btn btn-primary view-checkout'>
+            <Link to={`/app/ecommerce/checkout/${layout}`} className='btn btn-primary view-checkout'>
               {CheckOut}
             </Link>
           </li>

@@ -63,7 +63,7 @@ const Signin = ({ selected }) => {
         getUserData(account_address)
         if(response.data.isActive){          
           localStorage.setItem("login", JSON.stringify(true));
-          history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+          history(`/dashboard/default/${layoutURL}`);
         }else{
           setShowForm(true);
         }
@@ -122,7 +122,7 @@ const Signin = ({ selected }) => {
     setName("Emay Walter");
     if (email === "test@gmail.com" && password === "test123") {
       localStorage.setItem("login", JSON.stringify(true));
-      history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+      history(`/dashboard/default/${layoutURL}`);
       toast.success("Successfully logged in!..");
     } else {
       toast.error("You enter wrong password or username!..");
@@ -199,11 +199,11 @@ const Signin = ({ selected }) => {
         response = await updateData({address,referBy:walletAddress,transactionHash:invested.hash,uplineAddresses:response.data.uplineAddress,amount:11,levelDistribution:amounts})        
         getUserData(address);
         localStorage.setItem("login", JSON.stringify(true));
-        history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+        history(`/dashboard/default/${layoutURL}`);
       }else{
       setLoading(false)
         localStorage.setItem("login", JSON.stringify(true));
-        history(`${process.env.PUBLIC_URL}/dashboard/default/${layoutURL}`);
+        history(`/dashboard/default/${layoutURL}`);
       }
       
     }catch(err){   
@@ -305,7 +305,7 @@ const Signin = ({ selected }) => {
                           </Label>
                         </div>
 
-                        <Link className='link' to={`${process.env.PUBLIC_URL}/pages/authentication/forget-pwd`}>
+                        <Link className='link' to={`/pages/authentication/forget-pwd`}>
                           {ForgotPassword}
                         </Link> */}                    
                         <p>

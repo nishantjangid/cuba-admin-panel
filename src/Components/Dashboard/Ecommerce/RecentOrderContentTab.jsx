@@ -31,7 +31,7 @@ const RecentOrderContentTab = ({ RecentOrdersNav, isActive, show }) => {
                           </div>
                           <div>
                             <H6 attrH6={{ className: 'f-14 mb-0' }}>
-                              <Link to={`${process.env.PUBLIC_URL}/app/ecommerce/orderhistory`}>{item.title}</Link>
+                              <Link to={`/app/ecommerce/orderhistory`}>{item.title}</Link>
                             </H6>
                             <span className='f-light f-12'>Id : {item.id}</span>
                           </div>

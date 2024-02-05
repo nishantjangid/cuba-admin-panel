@@ -22,7 +22,7 @@ const SocialProfileCard = () => {
         </div>
         <div className='social-details'>
           <H5 attrH5={{ className: 'mb-1' }}>
-            <Link to={`${process.env.PUBLIC_URL}/app/social-app`}>{BrooklynSimmons}</Link>
+            <Link to={`/app/social-app`}>{BrooklynSimmons}</Link>
           </H5>
           <span className='f-light'>{BrooklynSimmonsEmail}</span>
           <UL attrUL={{ className: 'social-follow' }}>

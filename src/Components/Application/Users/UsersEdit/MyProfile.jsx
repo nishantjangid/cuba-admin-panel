@@ -38,7 +38,7 @@ const MyProfileEdit = ({imagePath, nameOfUser}) => {
                 <div className='media'>
                   <Image attrImage={{ className: 'img-70 m-0 rounded-circle', alt: '', src: imageURL }} />
                   <div className='media-body'>
-                    <Link to={`${process.env.PUBLIC_URL}/app/users/userProfile/${layoutURL}`}>
+                    <Link to={`/app/users/userProfile/${layoutURL}`}>
                       <H5 attrH5={{ className: 'mb-1' }}>{userData ? userData.name ? userData.name : nameOfUser : nameOfUser}</H5>
                     </Link>
                     <P> <span style={{color:'#BEBFC2'}} >

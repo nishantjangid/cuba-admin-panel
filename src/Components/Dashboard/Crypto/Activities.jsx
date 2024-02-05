@@ -27,7 +27,7 @@ const Activities = () => {
                     <Image attrImage={{ className: 'img-fluid img-40 rounded-circle me-2', src: require(`../../../assets/images/dashboard/user/${item.image}`), alt: 'user' }} />
                   </td>
                   <td className='img-content-box'>
-                    <Link className='d-block f-w-500' to={`${process.env.PUBLIC_URL}/app/users/profile`}>
+                    <Link className='d-block f-w-500' to={`/app/users/profile`}>
                       {item.title}
                     </Link>
                     <span className='f-light'>{item.subTitle}</span>
