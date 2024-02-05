@@ -16,7 +16,7 @@ import { useContractWrite } from 'wagmi'
 // ]
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
-}
+} 
 
 const Widgets1 = ({ data }) => {  
   const {userData} = useContext(MyContext);

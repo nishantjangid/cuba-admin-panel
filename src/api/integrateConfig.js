@@ -144,6 +144,20 @@ export const updatePackage = async (data) => {
     })    
 }
 
+export const updateslot = async (data) => {
+    return new Promise(async (resolve, reject)=>{
+        try{
+            const response = await axiosBase.patch('api/users/updateSlotdata' , data , {
+                headers : {
+                    'Content-Type' : 'application/json'
+                }
+            });
+            resolve(response.data)
+        }catch(error){
+            reject(error);
+        }
+    })    
+}
 
 export const buyPackages = async(data)=>{
     return new Promise(async (resolve, reject)=>{

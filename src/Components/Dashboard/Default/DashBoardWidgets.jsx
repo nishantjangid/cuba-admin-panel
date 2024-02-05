@@ -1,31 +1,67 @@
-import React from 'react';
+import React ,{useContext, useState} from 'react';
 import { Col, Row } from 'reactstrap';
 import Widgets1 from '../../Common/CommonWidgets/Widgets1';
 import Widgets2 from '../../Common/CommonWidgets/Widgets2';
+import Swal from 'sweetalert2'
 import { WidgetsData10, WidgetsData11, WidgetsData12, WidgetsData13, WidgetsData14, WidgetsData15, WidgetsData16, WidgetsData9 } from '../../../Data/DefaultDashboard';
 import { useAccount } from 'wagmi'
-import { buySlot } from '../../../api/integrateConfig';
+import { buySlot,updateslot } from '../../../api/integrateConfig';
+import { useContractWrite } from 'wagmi'
+import MyContext from '../../../Context/MyContext';
+import { ABI, BUSDABI, BUSDcontractAddress, contractAddress } from '../../../blockchain';
 
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
 const SlotActivation = () => {
+    const {userData} = useContext(MyContext);
+  const [loading,setLoading] = useState(false);
+  const {writeAsync:approve  
+  } = useContractWrite({
+    abi:BUSDABI,
+    address:BUSDcontractAddress,
+    functionName:'approve'    
+  }) 
+  const {writeAsync:buySlot  
+  } = useContractWrite({
+    abi:ABI,
+    address:contractAddress,
+    functionName:'buySlot'    
+  })
     const { address} = useAccount();  
     
 
     const handleCLick = async (total)=>{
         const num = parseInt(total.replace('$' , ''), 10);
         // console.log(`handle click si clicked and the amount:s${num}s`)
-        
-        const transactionHash = "0x6df737816d9d21d8ca8a54139af66fb08d45fe9d235e1c779d2b60c5d8035869"; 
 
         let data = {
             userId : localStorage.getItem("userID"),   //  in order to get user id from this, user must first go to edit profile section because this is where user ID is set to localsotrage otherwise it might throw error
             address : address,
-            transactionHash : transactionHash,
             slotType : num
         }
         try{
+            console.log("data",data);
         const response = await buySlot(data);
+        console.log("response",response);
+        let amountInWei = Number(response.data.amount) * (10**18);
+        let appr = await approve({args:[contractAddress,(amountInWei*2).toString()]});
+        await sleep(5000);
+        let transaction = await buySlot({args:[response.data.refferAddress,response.data.uplinAddress,amountInWei.toString()]});
+        let apiResponse = await updateslot({address,refferAddress:response.data.refferAddress,transactionHash:transaction.hash,uplineAddress:response.data.uplineAddress,amount:response.data.amount,userId:userData.userId})
+        setLoading(false);
+        if(apiResponse){
+            Swal.fire({
+              icon:"success",
+              text:'Slot Buy Successfully'
+            })
+          }else{
+            Swal.fire({
+              icon:"error",
+              text:"Internel Server Error"
+            })
+          }
         console.log(`response recieved from the user is ${response.message}`)
         // for (const key in response) {
         //                 if (response.hasOwnProperty(key)) {
@@ -56,7 +92,7 @@ const SlotActivation = () => {
                         <Widgets1 data={WidgetsData12} />
                     </Col>
                 </Row>
-            </Col>
+            </Col> 
             <Col xxl='auto' className='box-col-6'>
                 <Row>
                     <Col title='one can purchase this slot only when he was package of $320' onClick={()=>{handleCLick(WidgetsData13.total)}}>

@@ -180,7 +180,7 @@ export const WidgetsData10 = {
   color: 'success',
   // icon: 'rate',
   icon: 'cart',
-
+ 
 };export const WidgetsData16 = {
   title: 'Package8',
   gros: 70,
