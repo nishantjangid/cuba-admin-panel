@@ -11,6 +11,10 @@ import { IoEyeSharp } from "react-icons/io5";
 import IntegrationNotistack from "./CopySuccsessful";
 import { CiShare1 } from "react-icons/ci";
 import { FaWallet } from "react-icons/fa6";
+import { fetchAllActivities, fetchAllIncomeInfo, fetchLatestAnnouncement } from "../../../api/integrateConfig";
+import {useAccount} from 'wagmi';
+import MyContext from "../../../Context/MyContext";
+import { useContext } from "react";
 
 
 
@@ -18,11 +22,22 @@ import { FaWallet } from "react-icons/fa6";
 
 
 const Dashboard = () => {
+  const [refferalIncome , setRefferalIncome] = useState();
+  const [levelIncome , setLevelIncome] = useState();
+  const [slotIncome , setSlotIncome] = useState();
+  const [totalIncome , setTotalIncome] = useState();
+  const [totalUsers, setTotalUsers] = useState();
+  const [packageIncome , setPackageIncome] = useState();
+  const [totalTeam , setTotalTeam] = useState();
+  const {address} = useAccount();
+  const {userData} = useContext(MyContext);
+  const [platformData , setPlatformData] = useState([])
 
   const [visibleItems, setVisibleItems] = useState(15); // Number of items to display initially
 
   const [isSeeMoreVisible, setIsSeeMoreVisible] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(true);
+console.log(userData);  const [announcement , setAnnouncement] = useState('')
 
   useEffect(() => {
     const handleResize = () => {
@@ -63,136 +78,136 @@ const Dashboard = () => {
     window.getSelection().removeAllRanges();
   };
 
-  const platformdata = [
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
-      newuser: 'New User Join',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'NewUser'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
-    {
-      usericon: (<FaWallet style={{ color: 'green' }} />),
-      newuser: '+5 BUSD in x4',
-      UserId: '869255',
-      jioningtiming: '7 minutes',
-      className: 'transaction'
-    },
+  // const platformdata1 = [
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Joinabcd',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<PersonAddAltRoundedIcon sx={{ fontSize: "15px" }} />),
+  //     newuser: 'New User Join',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'NewUser'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
+  //   {
+  //     usericon: (<FaWallet style={{ color: 'green' }} />),
+  //     newuser: '+5 BUSD in x4',
+  //     UserId: '869255',
+  //     jioningtiming: '7 minutes',
+  //     className: 'transaction'
+  //   },
 
 
-  ]
+  // ]
 
   const showMoreItems = () => {
     setVisibleItems(visibleItems + 15); // Increase the number of visible items
@@ -206,6 +221,95 @@ const Dashboard = () => {
     { name: 'x3/x4', link: ' 0x5ac...B97' }
   ]
 
+
+  useEffect(()=>{
+    const fetchListOfActivities = async()=>{
+      try{
+        const activityList = await fetchAllActivities();
+        setPlatformData(activityList.allActivities);
+        // console.log(activityList)
+        // console.log(`activity list is : ${platformData}`)
+
+      }catch(error){
+        console.log(`error in fetching list of activities in useEffect : ${error.message}`)
+      }
+    }
+    // fetchListOfActivities();
+
+    const fetchAllIncome = async()=>{
+      // const address = localStorage.getItem("address");
+      let data = {
+        address : address
+      }
+      try{
+      const response = await fetchAllIncomeInfo(data);
+      setTotalIncome(response.data.totalIncome);
+      // setTotalProfit(response.data.totalProfit)
+      setTotalTeam(response.data.totalTeam);
+      setRefferalIncome(response.data.refferalIncome);
+      setPackageIncome(response.data.packageIncome);
+      setSlotIncome(response.data.slotIncome);
+      setLevelIncome(response.data.levelIncome);
+      setTotalTeam(response.data.totalTeam);
+      setTotalUsers(response.data.totalMembers);
+      }catch(error){
+        console.log(`error in fetching all data : ${error.message}`);
+      }
+    
+    }
+
+    const fetchAnnouncement = async()=>{
+      try{
+        const response = await fetchLatestAnnouncement();
+        setAnnouncement(response.statement);
+
+      }catch(error){
+        console.log(`error in fetch announcement : ${error.message}`);
+      }
+    }
+
+    fetchListOfActivities();
+    fetchAllIncome();
+    fetchAnnouncement();
+
+  }, [])
+
+
+  const formatTimeDifference = (createdAt) => {
+    const currentDate = new Date();
+    const createdAtDate = new Date(createdAt);
+
+    const timeDifferenceInMilliseconds = currentDate - createdAtDate;
+    const timeDifferenceInSeconds = Math.floor(timeDifferenceInMilliseconds / 1000);
+    const minutes = Math.floor(timeDifferenceInSeconds / 60);
+
+    if (minutes < 1) {
+        return 'Just now';
+    } else if (minutes < 60) {
+        return minutes === 1 ? '1 minute ago' : `${minutes} minutes ago`;
+    } else {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+
+        if (hours < 24) {
+            return hours === 1 ? `1 hour ago` : `${hours} hours ago`;
+        } else {
+            const days = Math.floor(hours / 24);
+            const remainingHours = hours % 24;
+
+            if (remainingMinutes === 0 && remainingHours === 0) {
+                return days === 1 ? `1 day ago` : `${days} days ago`;
+            } else if (remainingMinutes === 0) {
+                return days === 1 ? `1 day ${remainingHours} hours ago` : `${days} days ${remainingHours} hours ago`;
+            } else if (remainingHours === 0) {
+                return days === 1 ? `1 day ${remainingMinutes} minutes ago` : `${days} days ago`;
+            } else {
+                return days === 1 ? `1 day ${remainingHours} hours ago` : `${days} days ${remainingHours} hours ago`;
+            }
+        }
+    }
+}
+console.log(process.env)
   return (
     <div className="dashboard-container">
 
@@ -248,12 +352,12 @@ const Dashboard = () => {
                     <img width={'120px'} src="/images/UnknownUser.webp" alt="" />
                   </div>
                   <div>
-                    <span style={{ color: '#8B9FA8', fontSize: '23px', fontWeight: '800' }}>ID 468</span>
+                    <span style={{ color: '#8B9FA8', fontSize: '23px', fontWeight: '800' }}>{userData ? "ID "+userData.userId : ""}</span>
                   </div>
                   <div className={`see-more ${isSeeMoreVisible ? 'visible' : ''}`}>
 
                     <div>
-                      <span style={{ color: '#black', fontSize: '16px', fontWeight: '600' }}>0xb37e...0868</span>
+                      <span style={{ color: '#black', fontSize: '16px', fontWeight: '600' }}>{address ? address.slice(0,7)+'...'+address.slice(38,48) : "0x0000...00000"}</span>
                     </div>
                     <div style={{ color: 'gray' }}>
                       Invited 01.06.2023 by <span className="ID-box">ID 1</span>
@@ -274,7 +378,7 @@ const Dashboard = () => {
                         <input
                           ref={textToCopyRef}
                           type="text"
-                          value="metablocktechnologies.io"
+                          value={userData ? `${process.env.REACT_APP_WEBSITE_URL}/login?refferal=${address}` : ""}
                           readOnly
                           style={{ color: '#406AFF', fontSize: '18px', fontWeight: '800', border: 'none', outline: 'none', background: 'transparent', width: '250px' }}
                         />
@@ -306,7 +410,7 @@ const Dashboard = () => {
 
                 <div className="first-container-box-left">
                   <b>Team</b>
-                  <h5>27</h5>
+                  <h5>{totalTeam}</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -333,7 +437,7 @@ const Dashboard = () => {
                
                 <div className="first-container-box-left">
                   <b>Total Profit</b>
-                  <h5>27</h5>
+                  <h5>{totalIncome}</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -358,7 +462,7 @@ const Dashboard = () => {
                 </div>
                 <div style={{ width: '80%', paddingLeft: '15px' }}>
                   <marquee className="hurryup" behavior="smooth" direction="left" >
-                    User New For OFF 50% !Up Hurry.
+                    {announcement} 
                     {/* Hurry up! 50% OFF For New User */}
                   </marquee>
                 </div>
@@ -467,8 +571,8 @@ const Dashboard = () => {
                     <div className="empty-div-row">
                       <div className="empty-main-div">
                         <div className="empty-row-1-div">
-                          <div className="empty-div empty-div-2-1"></div>
-                          <div className="empty-div empty-div-1-1">
+                          <div className="empty-div empty-div-2-1"></div>     {/* this is the blue div       */}
+                          <div className="empty-div empty-div-1-1">   {/* this is red part and inside it is the white svg   */}
                             <svg
                               className="fill-current text-white"
                               width="24"
@@ -626,26 +730,26 @@ const Dashboard = () => {
               <div className="platform-left-container">
                 <div className="platform-left-box" >
                   <div></div>
-                  {platformdata.slice(0, visibleItems).map((data, index) => (
+                  {platformData.slice(0, visibleItems).map((data, index) => (   //class is currently data.className
                     <div className="table-in-row-1" key={index}>
                       <div className="table-left-div">
                         <div className="table-user-icon" style={{ fontSize: '15px' }}>
-                          {data.usericon}
+                          {/* {data.usericon} */}
                         </div>
-                        <div className={data.className}>
+                        <div className='NewUser'>
 
                           <div className="new-user-heading">
-                            <span>{data.newuser}</span>
+                            <span>{data.activiy}</span>
                           </div>
-                          <div className="ID-box">ID {data.UserId}</div>
+                          <div className="ID-box">ID {data.userId}</div>
                         </div>
                       </div>
 
                       <div className="table-right-div">
                         <span>
-                          <CiShare1 size={'18px'} style={{ fontWeight: '800' }} />
+                          <CiShare1 size={'18px'} style={{ fontWeight: '800', cursor : 'pointer' }} onClick={() => window.open(`https://testnet.bscscan.com/tx/${data.transactionHash}`, '_blank')} />
                         </span>
-                        <span>{data.jioningtiming}</span>
+                        <span>{formatTimeDifference(data.createdAt)}</span>
                       </div>
                     </div>
 
@@ -677,7 +781,7 @@ const Dashboard = () => {
 
 
 
-                  {platformdata.length > visibleItems && (
+                  {platformData.length > visibleItems && (
                     <div className="see-more-div">
                       <div className="see-more-button" onClick={showMoreItems}>
 
