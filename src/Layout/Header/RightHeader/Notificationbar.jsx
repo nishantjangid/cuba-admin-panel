@@ -7,7 +7,7 @@ const Notificationbar = () => {
 
   return (
     <li className='onhover-dropdown'>
-      <div className='notification-box' onClick={() => setNotificationDropDown(!notificationDropDown)}>
+      {/* <div className='notification-box' onClick={() => setNotificationDropDown(!notificationDropDown)}>
         <SvgIcon iconId='notification' />
         <span className='badge rounded-pill badge-secondary'>4</span>
       </div>
@@ -43,7 +43,7 @@ const Notificationbar = () => {
             </a>
           </li>
         </ul>
-      </div>
+      </div> */}
     </li>
   );
 };

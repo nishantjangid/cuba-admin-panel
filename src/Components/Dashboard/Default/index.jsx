@@ -214,11 +214,7 @@ console.log(userData);  const [announcement , setAnnouncement] = useState('')
   };
 
   const boxdata3 = [
-    { name: 'x3/x4', link: ' 0x5ac...B97' },
-    { name: 'x3/x4', link: ' 0x5ac...B97' },
-    { name: 'x3/x4', link: ' 0x5ac...B97' },
-    { name: 'x3/x4', link: ' 0x5ac...B97' },
-    { name: 'x3/x4', link: ' 0x5ac...B97' }
+    { name: 'x3/x4', link:  '0x017.....15597' }
   ]
 
 
@@ -418,7 +414,7 @@ console.log(process.env)
                 </div>
                 <div className="first-container-box-left">
                   <b>Total Referral</b>
-                  <h5>27</h5>
+                  <h5>2</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -445,7 +441,7 @@ console.log(process.env)
                 </div>
                 <div className="first-container-box-left">
                   <b>Today Profit</b>
-                  <h5>27</h5>
+                  <h5>{totalIncome}</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -477,7 +473,7 @@ console.log(process.env)
                   <div className="dashboard-container-box dashboard-boxes"  >
                     <div>
                       <div> <span style={{ fontSize: '34px', fontWeight: '500' }}>
-                        0
+                        {refferalIncome}
                       </span>
                       </div>
                       <div> <span>
@@ -489,7 +485,7 @@ console.log(process.env)
                   <div className="dashboard-container-box dashboard-boxes" >
                     <div>
                       <div> <span style={{ fontSize: '34px', fontWeight: '500' }}>
-                        0
+                        {levelIncome}
                       </span>
                       </div>
                       <div> <span>
@@ -502,7 +498,7 @@ console.log(process.env)
                   <div className="dashboard-container-box dashboard-boxes" >
                     <div>
                       <div> <span style={{ fontSize: '34px', fontWeight: '500' }}>
-                        0
+                        {packageIncome}
                       </span>
                       </div>
                       <div> <span>
@@ -514,7 +510,7 @@ console.log(process.env)
                   <div className="dashboard-container-box dashboard-boxes" >
                     <div>
                       <div> <span style={{ fontSize: '34px', fontWeight: '500' }}>
-                        0
+                        {slotIncome}
                       </span>
                       </div>
                       <div> <span>
@@ -527,7 +523,7 @@ console.log(process.env)
                   <div className="dashboard-container-box dashboard-boxes" >
                     <div>
                       <div> <span style={{ fontSize: '34px', fontWeight: '500' }}>
-                        0
+                        {totalIncome}
                       </span>
                       </div>
                       <div> <span>
@@ -796,56 +792,56 @@ console.log(process.env)
 
               <div className="platform-right-container">
                 <div className="platform-right-box-1" >
-                  <div>
+                  {/* <div>
                     <span className="right-box-1-heading">
                       Members total
                     </span>
-                  </div>
+                  </div> */}
 
-                  <div>
+                  {/* <div>
                     <div style={{ color: 'white', fontSize: '23px', fontWeight: '700' }}>
                       <span>1452 555</span>
                     </div>
                     <div style={{ color: 'lightgreen', fontSize: '17px' }}>
                       <span><NorthIcon sx={{ fontSize: '16px' }} />554</span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="platform-right-box-2">
-                  <div>
+                  {/* <div>
                     <span className="right-box-1-heading">
                       Members received
                     </span>
-                  </div>
+                  </div> */}
 
-                  <div style={{ borderBottom: '1px solid #363737', paddingBottom: '5px' }}>
+                  {/* <div style={{ borderBottom: '1px solid #363737', paddingBottom: '5px' }}>
                     <div style={{ color: 'white', fontSize: '23px', fontWeight: '700' }}>
                       <span> 1452 555</span>
                     </div>
                     <div style={{ color: 'lightgreen', fontSize: '17px' }}>
                       <span>
-                        {/* <NorthIcon sx={{ fontSize: '16px' }} /> */}
+                       
                         + 554</span>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div>
+                  {/* <div>
                     <div style={{ color: 'white', fontSize: '23px', fontWeight: '700' }}>
                       <span>1452 555</span>
                     </div>
                     <div style={{ color: 'lightgreen', fontSize: '17px' }}>
                       <span>
-                        {/* <NorthIcon sx={{ fontSize: '16px' }} /> */}
+                        
                         + 554</span>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="platform-right-box-3">
                   <div>
                     <span className="right-box-3-heading-main">
-                      Forsage BUSD Contracts
+                      Groways BUSD Contracts
                     </span>
                   </div>
                   {boxdata3.map((data1, index) => {
@@ -868,7 +864,7 @@ console.log(process.env)
                     )
                   })}
 
-                  <div>
+                  {/* <div>
                     <span className="right-box-1-heading">
                       Transactions made
                     </span>
@@ -880,12 +876,12 @@ console.log(process.env)
                     </div>
                     <div style={{ color: 'lightgreen', fontSize: '17px' }}>
                       <span>
-                        {/* <NorthIcon sx={{ fontSize: '16px' }} /> */}
+                       
                         + 554</span>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div>
+                  {/* <div>
                     <span className="right-box-1-heading">
                       Turnover, BUSD
                     </span>
@@ -897,10 +893,10 @@ console.log(process.env)
                     </div>
                     <div style={{ color: 'lightgreen', fontSize: '17px' }}>
                       <span>
-                        {/* <NorthIcon sx={{ fontSize: '16px' }} /> */}
+                        
                         + 554</span>
                     </div>
-                  </div>
+                  </div> */}
 
                 </div>
 
