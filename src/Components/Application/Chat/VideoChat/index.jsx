@@ -252,7 +252,7 @@ const VideoChatContain = () => {
                         <th> User Name</th>
                         <th> User ID</th>
                         <th>User Wallet Address</th>
-                        <th>Sponser ID</th>
+                        {/* <th>Sponser ID</th> */}
                         <th>Sponser Wallet Address</th>
                         {/* <th>Wallet Address</th> */}
                         {/* <th>Wallet Amount</th> */}
@@ -274,8 +274,8 @@ const VideoChatContain = () => {
                           <td>{row.name}</td>
                           <td>{row.userId}</td>
                           <td>{row.address}</td>
+                          {/* <td>row.SponserID</td> */}
                           <td>{row.referBy}</td>
-                          <td>row.SponserID</td>
                           {/* <td>{row.wallet}</td> */}
                           {/* <td
                          style={{ cursor: 'pointer' }}

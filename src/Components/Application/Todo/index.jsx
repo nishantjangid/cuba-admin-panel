@@ -48,6 +48,8 @@ const TodoContain = () => {
   //   ]
   // )
   const [data , setData] = useState([]);
+   let filtereddata = data;
+  filtereddata.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   const [ascendingOrder, setAscendingOrder] = useState(true);
 
@@ -225,7 +227,7 @@ useEffect(()=>{        //new addition
                           </tr>
                         </thead>
                         <tbody>
-                          {data.map((row, index) => (
+                          {filtereddata.map((row, index) => (
                             <tr key={index}>
                               <td>{new Date(row.time).toLocaleString()}</td>
                               <td>{row.userId}</td>

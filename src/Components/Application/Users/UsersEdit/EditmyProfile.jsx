@@ -118,7 +118,7 @@ const EditMyProfile = ({setNameOfUser,setImagePath }) => {
                 // setValue('sposerId' , response.userData.referBy);
                 // setValue('userId' , response.userData.userId);
                 // setValue('join_time' , response.userData.join_time)
-                setSponserId(response.userData.userRefferData)
+                setSponserId(response.sponsorId)
                 // console.log(response.userData);
                 setFormdata({...response.userData})
                 setNameOfUser(response.userData.name);

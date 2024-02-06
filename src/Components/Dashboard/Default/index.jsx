@@ -11,7 +11,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import IntegrationNotistack from "./CopySuccsessful";
 import { CiShare1 } from "react-icons/ci";
 import { FaWallet } from "react-icons/fa6";
-import { fetchAllActivities, fetchAllIncomeInfo, fetchLatestAnnouncement } from "../../../api/integrateConfig";
+import { fetchAllActivities, fetchAllIncomeInfo, fetchLatestAnnouncement, fetchPackageInfoForDashboardBox, fetchSlotsInfoForDashboardBox } from "../../../api/integrateConfig";
 import {useAccount} from 'wagmi';
 import MyContext from "../../../Context/MyContext";
 import { useContext } from "react";
@@ -28,10 +28,13 @@ const Dashboard = () => {
   const [totalIncome , setTotalIncome] = useState();
   const [totalUsers, setTotalUsers] = useState();
   const [packageIncome , setPackageIncome] = useState();
-  const [totalTeam , setTotalTeam] = useState();
+  const [totalReferrals , setTotalReferrals] = useState();
   const {address} = useAccount();
   const {userData} = useContext(MyContext);
   const [platformData , setPlatformData] = useState([])
+  const [listOfALLPackages , setListOfAllPackages] = useState([]);
+  const [listOfAllSlots , setListOfAllSlots] = useState([]);
+
 
   const [visibleItems, setVisibleItems] = useState(15); // Number of items to display initially
 
@@ -48,7 +51,7 @@ console.log(userData);  const [announcement , setAnnouncement] = useState('')
         setIsSeeMoreVisible(false); // Reset visibility on larger screens
       }
     };
-
+    localStorage.setItem("userID" , userData.userId)
     // Initial check on component mount
     handleResize();
 
@@ -241,12 +244,12 @@ console.log(userData);  const [announcement , setAnnouncement] = useState('')
       const response = await fetchAllIncomeInfo(data);
       setTotalIncome(response.data.totalIncome);
       // setTotalProfit(response.data.totalProfit)
-      setTotalTeam(response.data.totalTeam);
+      setTotalReferrals(response.data.totalTeam);
       setRefferalIncome(response.data.refferalIncome);
       setPackageIncome(response.data.packageIncome);
       setSlotIncome(response.data.slotIncome);
       setLevelIncome(response.data.levelIncome);
-      setTotalTeam(response.data.totalTeam);
+      // setTotalTeam(response.data.totalTeam);
       setTotalUsers(response.data.totalMembers);
       }catch(error){
         console.log(`error in fetching all data : ${error.message}`);
@@ -264,9 +267,38 @@ console.log(userData);  const [announcement , setAnnouncement] = useState('')
       }
     }
 
+    const fetchAllPackages = async()=>{
+      try{
+        let data = {
+          address : address
+        }
+        const response = await fetchPackageInfoForDashboardBox(data);
+        setListOfAllPackages([...response.allPackagesOfUser]);
+
+
+      }catch(error){
+        
+      }
+    }
+    const fetchAllSlots = async()=>{
+      try{
+        const idOfuser = userData ? userData.userId : "";
+        let data = {
+          userId : idOfuser
+        }
+        const response = await fetchSlotsInfoForDashboardBox(data);
+        setListOfAllSlots([...response.slotsOfUser]);
+
+      }catch(error){
+        console.log(`error in fetch all slots for dashboard function`)
+      }
+    }
+
     fetchListOfActivities();
     fetchAllIncome();
     fetchAnnouncement();
+    fetchAllPackages();
+    fetchAllSlots();
 
   }, [])
 
@@ -345,7 +377,7 @@ console.log(process.env)
                 <div className="main-upper-left-div">
 
                   <div className="user-img-box">
-                    <img width={'120px'} src="/images/UnknownUser.webp" alt="" />
+                  <img width={'120px'} src={`${process.env.REACT_APP_IMAGE_URL}/${userData.profilePicture}`} alt="" />
                   </div>
                   <div>
                     <span style={{ color: '#8B9FA8', fontSize: '23px', fontWeight: '800' }}>{userData ? "ID "+userData.userId : ""}</span>
@@ -356,7 +388,8 @@ console.log(process.env)
                       <span style={{ color: '#black', fontSize: '16px', fontWeight: '600' }}>{address ? address.slice(0,7)+'...'+address.slice(38,48) : "0x0000...00000"}</span>
                     </div>
                     <div style={{ color: 'gray' }}>
-                      Invited 01.06.2023 by <span className="ID-box">ID 1</span>
+                      Invited At {new Date(userData.createdAt).toLocaleDateString()} 
+                      {/* <span className="ID-box">ID 1</span> */}
                     </div>
                   </div>
 
@@ -406,7 +439,7 @@ console.log(process.env)
 
                 <div className="first-container-box-left">
                   <b>Team</b>
-                  <h5>{totalTeam}</h5>
+                  <h5>2</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -414,7 +447,7 @@ console.log(process.env)
                 </div>
                 <div className="first-container-box-left">
                   <b>Total Referral</b>
-                  <h5>2</h5>
+                  <h5>{totalReferrals}</h5>
                   <div className="icon-redius" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div className="zero-number"> 0</div>
                     <div className="reload-icon"> <img src="/images/activity_white.webp" alt="" /></div>
@@ -555,7 +588,7 @@ console.log(process.env)
                       <div>
                         <div>
                           <span className="package-header">
-                            10 BUSD
+                            {userData.packageIncome}
                           </span>
                         </div>
                         <div>
@@ -563,18 +596,47 @@ console.log(process.env)
                         </div>
                       </div>
                     </div>
-
                     <div className="empty-div-row">
                       <div className="empty-main-div">
                         <div className="empty-row-1-div">
-                          <div className="empty-div empty-div-2-1"></div>     {/* this is the blue div       */}
-                          <div className="empty-div empty-div-1-1">   {/* this is red part and inside it is the white svg   */}
-                            <svg
+                          {listOfALLPackages.includes("20")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("30")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("80")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("160")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("320")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("640")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("1280")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("2560")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("5120")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          {listOfALLPackages.includes("10240")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div>)}
+                          
+                          {/* <div className="empty-div empty-div-1-1">  
+                            <svg   // not important
                               className="fill-current text-white"
                               width="24"
                               height="24"
                               viewBox="0 0 20 20"
-                              fill="white" // Set the fill property to "white"
+                              fill="white" 
                               xmlns="http://www.w3.org/2000/svg"
                             >
                               <path
@@ -584,8 +646,8 @@ console.log(process.env)
                               ></path>
                             </svg>
 
-                          </div>
-                          <div className="empty-div empty-div-1-1">
+                          </div> */}
+                          {/* <div className="empty-div empty-div-1-1">
                             <svg
                               className="fill-current text-white"
                               width="24"
@@ -600,34 +662,34 @@ console.log(process.env)
                                 d="M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Zm0-11.334a.5.5 0 0 1 .5.5V10a.5.5 0 0 1-1 0V6.667a.5.5 0 0 1 .5-.5Zm0 6.668a.5.5 0 0 0 0 1h.01a.5.5 0 0 0 0-1H10Z"
                               ></path>
                             </svg>
-                          </div>
-                          <div className="empty-div"></div>
+                          </div> */}
+                          {/* <div className="empty-div"></div> */}
                         </div>
-                        <div className="empty-row-1-div">
+                        {/* <div className="empty-row-1-div">
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
-                        </div>
-                        <div className="empty-row-1-div">
+                        </div> */}
+                        {/* <div className="empty-row-1-div">
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="empty-right-div">
                         <div>
-                          <span style={{ color: '#E1444D', fontSize: '14px' }}>
+                          {/* <span style={{ color: '#E1444D', fontSize: '14px' }}>
                             Missed Profits
-                          </span>
+                          </span> */}
                         </div>
                         <div>
-                          <span style={{ color: '#E1444D', fontSize: '20px', fontWeight: '700' }}>
-                            40 USD</span>
+                          {/* <span style={{ color: '#E1444D', fontSize: '20px', fontWeight: '700' }}>
+                            40 USD</span> */}
                         </div>
                         <div className="preview-button">
-                          <button>Preview</button>
+                          <button>View</button>
                         </div>
                       </div>
                     </div>
@@ -647,7 +709,7 @@ console.log(process.env)
                       <div>
                         <div>
                           <span className="package-header">
-                            10 BUSD
+                            {userData.slotIncome}
                           </span>
                         </div>
                         <div>
@@ -657,29 +719,54 @@ console.log(process.env)
                     </div>
 
                     <div className="empty-div-row">
+                      {}
                       <div className="empty-main-div">
                         <div className="empty-row-1-div">
+                        {listOfAllSlots.includes("20")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("50")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("100")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("200")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("500")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("800")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("1000")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {listOfAllSlots.includes("1500")?(
+                            <div className="empty-div empty-div-2-1"></div>
+                          ): (<div className="empty-div"></div> )}
+                          {/* <div className="empty-div empty-div-2-1"></div> */}
+                          {/* <div className="empty-div empty-div-2-1"></div>
                           <div className="empty-div empty-div-2-1"></div>
-                          <div className="empty-div empty-div-2-1"></div>
-                          <div className="empty-div empty-div-2-1"></div>
-                          <div className="empty-div"></div>
+                          <div className="empty-div"></div> */}
                         </div>
-                        <div className="empty-row-1-div">
+                        {/* <div className="empty-row-1-div">
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
-                        </div>
-                        <div className="empty-row-1-div">
+                        </div> */}
+                        {/* <div className="empty-row-1-div">
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
                           <div className="empty-div"></div>
-                        </div>
+                        </div> */}
                       </div>
                       <div className="empty-right-div-box-2">
                         <div className="preview-button-right-box ">
-                          <button>Preview</button>
+                          <button>View</button>
                         </div>
                       </div>
                     </div>
@@ -791,7 +878,7 @@ console.log(process.env)
               </div>
 
               <div className="platform-right-container">
-                <div className="platform-right-box-1" >
+                {/* <div className="platform-right-box-1" > */}
                   {/* <div>
                     <span className="right-box-1-heading">
                       Members total
@@ -806,9 +893,9 @@ console.log(process.env)
                       <span><NorthIcon sx={{ fontSize: '16px' }} />554</span>
                     </div>
                   </div> */}
-                </div>
+                {/* </div> */}
 
-                <div className="platform-right-box-2">
+                {/* <div className="platform-right-box-2"> */}
                   {/* <div>
                     <span className="right-box-1-heading">
                       Members received
@@ -836,7 +923,7 @@ console.log(process.env)
                         + 554</span>
                     </div>
                   </div> */}
-                </div>
+                {/* </div> */}
 
                 <div className="platform-right-box-3">
                   <div>

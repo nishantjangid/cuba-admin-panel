@@ -67,9 +67,12 @@ const MailInboxContain = () => {
         endDate : toDate 
         // ? toDate : new Date().toISOString().split('T')[0] 
       }
+      console.log(fromDate)
+      console.log(toDate);
         const response  = await fetchPackage(data1);
         console.log(`response recieved is : ${response.message}`)
         console.log(`whole response is : ${response}`)
+        console.log(response)
         setData(response.result);        // the data is then mapped in the table
     }catch(error){
       console.log(`error in fetch all packages when hit from the front end : ${error.message}`)
@@ -80,20 +83,21 @@ const MailInboxContain = () => {
     fetchAllPackages();
   }, [fromDate, toDate])
 
+  let filtereddata = data;
+  filtereddata.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
 
+  // const filteredData = data.filter((row) => {
+  //   const rowDate = new Date(row.Date);
+  //   const fromDateObj = fromDate ? new Date(fromDate) : null;
+  //   const toDateObj = toDate ? new Date(toDate) : null;
 
-  const filteredData = data.filter((row) => {
-    const rowDate = new Date(row.Date);
-    const fromDateObj = fromDate ? new Date(fromDate) : null;
-    const toDateObj = toDate ? new Date(toDate) : null;
-
-    return (
-      rowDate >= (fromDateObj || rowDate) &&
-      rowDate <= (toDateObj || rowDate) &&
-      row.Date.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  });
+  //   return (
+  //     rowDate >= (fromDateObj || rowDate) &&
+  //     rowDate <= (toDateObj || rowDate) &&
+  //     row.Date.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
+  // });
 
 
   const handlePrint = () => {

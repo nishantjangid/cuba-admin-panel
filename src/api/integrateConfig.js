@@ -293,3 +293,37 @@ export const fetchLatestAnnouncement = async()=>{
         }
     })
 }
+
+
+
+export const fetchPackageInfoForDashboardBox = async(data)=>{
+    return new Promise(async(resolve , reject)=>{
+        try{
+            const response = await axiosBase.get(`/api/users/packageofuser/${data.address}` , {
+                headers : {
+                    'Content-Type' : 'application/json',
+                }
+            });
+            resolve(response.data);
+        }catch(error){
+            reject(error)
+        }
+    })
+}
+
+
+
+export const fetchSlotsInfoForDashboardBox = async(data)=>{
+    return new Promise(async(resolve , reject)=>{
+        try{    
+            const reponse = await axiosBase.get(`/api/users/slotsofuser/${data.userId}`, {
+                headers : {
+                    'Content-Type' : 'application/json',
+                }
+            })
+            resolve(reponse.data)
+        }catch(error){
+            reject(error);
+        }
+    })
+}
