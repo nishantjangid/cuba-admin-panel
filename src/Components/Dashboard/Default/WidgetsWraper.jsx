@@ -131,6 +131,9 @@ const WidgetsWrapper = () => {
       icon: 'cart'      
     }               
   ])
+  // total: (
+  //   <span style={{ color: 'black' }}>$20</span>
+  // ),
   const handleClick = async (total)=>{
     console.log("this is the function where you have to get buy package")
     console.log(`the total is : ${total}`)
