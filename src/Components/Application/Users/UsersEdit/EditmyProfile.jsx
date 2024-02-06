@@ -119,7 +119,7 @@ const EditMyProfile = ({setNameOfUser,setImagePath }) => {
                 // setValue('userId' , response.userData.userId);
                 // setValue('join_time' , response.userData.join_time)
                 setSponserId(response.userData.userRefferData)
-                console.log(response.userData);
+                // console.log(response.userData);
                 setFormdata({...response.userData})
                 setNameOfUser(response.userData.name);
                 setImagePath(response.userData.profilePicture);
