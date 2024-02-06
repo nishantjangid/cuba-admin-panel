@@ -285,12 +285,12 @@ const VideoChatContain = () => {
                        </td> */}
                           <td>{new Date(row.createdAt).toLocaleString()}</td>
                           {/* <td>{row.time}</td> */}
-                          <td>row.Date</td>
-                          <td>row.ReferralIncome</td>
-                          <td>row.LevelIncome</td>
-                          <td>row.PackageIncome</td>
-                          <td>row.SlotIncome</td>
-                          <td>row.TotalIncome</td>
+                          <td>{new Date(row.createdAt).toLocaleString()}</td>
+                          <td>{row.refferalIncome}</td>
+                          <td>{row.levelIncome}</td>
+                          <td>{row.packageIncome}</td>
+                          <td>{row.slotIncome}</td>
+                          <td>{row.slotIncome+row.packageIncome+row.levelIncome+row.refferalIncome}</td>
                           {/* <td>
                          <Button color='primary' onClick={() => handleEditClick(row)}>
                            Edit

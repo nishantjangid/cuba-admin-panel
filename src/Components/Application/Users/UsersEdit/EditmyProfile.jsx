@@ -33,7 +33,6 @@ const EditMyProfile = ({setNameOfUser,setImagePath }) => {
     const [emailId, setEmailId] = useState();
     
     const [sponserId , setSponserId] = useState('')
-    
 
     const onEditSubmit = async (e) => {
         try{
@@ -119,6 +118,8 @@ const EditMyProfile = ({setNameOfUser,setImagePath }) => {
                 // setValue('sposerId' , response.userData.referBy);
                 // setValue('userId' , response.userData.userId);
                 // setValue('join_time' , response.userData.join_time)
+                setSponserId(response.userData.userRefferData)
+                console.log(response.userData);
                 setFormdata({...response.userData})
                 setNameOfUser(response.userData.name);
                 setImagePath(response.userData.profilePicture);

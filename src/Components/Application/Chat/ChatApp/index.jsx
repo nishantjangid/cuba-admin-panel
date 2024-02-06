@@ -249,7 +249,7 @@ const ChatAppContain = () => {
                         <th> User ID</th>
                         <th>User Wallet Address</th>
                         <th>Sponser Wallet Address</th>
-                        <th>Sponser ID</th>
+                        {/* <th>Sponser ID</th> */}
                         {/* <th>Wallet Address</th> */}
                         {/* <th>Wallet Amount</th> */}
                         {/* <th>Time</th> */}
@@ -270,7 +270,7 @@ const ChatAppContain = () => {
                           <td>{row.userId}</td>
                           <td>{row.address}</td>
                           <td>{row.referBy}</td>
-                          <td>row.SponserIDfill later</td>
+                          {/* <td>row.SponserIDfill later</td> */}
                           {/* <td>{row.wallet}</td> */}
                           {/* <td
                             style={{ cursor: 'pointer' }}
@@ -279,11 +279,11 @@ const ChatAppContain = () => {
                             {row.WalletAddress}
                           </td> */}
                           {/* <td>{row.time}</td> */}
-                          <td>row.ReferralIncome</td>
-                          <td>row.LevelIncome</td>
-                          <td>row.PackageIncome</td>
-                          <td>row.SlotIncome</td>
-                          <td>row.TotalIncome</td>
+                          <td>{row.refferalIncome}</td>
+                          <td>{row.levelIncome}</td>
+                          <td>{row.packageIncome}</td>
+                          <td>{row.slotIncome}</td>
+                          <td>{row.slotIncome+row.packageIncome+row.levelIncome+row.refferalIncome}</td>
                           <td>{new Date(row.createdAt).toLocaleString()}</td>
                           {/* <td>
                             <Button color='primary' onClick={() => handleEditClick(row)}>

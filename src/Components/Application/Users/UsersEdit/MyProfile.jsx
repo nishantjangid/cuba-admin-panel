@@ -13,7 +13,7 @@ const MyProfileEdit = ({imagePath, nameOfUser}) => {
   const {userData} = useContext(MyContext);
   // dotenv.config(); 
   // const imageURL = `${process.env.IMAGE_URL}/${imagePath}`;
-  const imageURL = userData ? userData.profilePicture ? process.env.REACT_APP_API_URL+"/image"+userData.profilePicture : "" : `${process.env.REACT_APP_WEBSITE_URL}/images/${imagePath}`;
+  const imageURL = userData ? userData.profilePicture ? process.env.REACT_APP_API_URL+"/images/"+userData.profilePicture : "" : `${process.env.REACT_APP_WEBSITE_URL}/images/${imagePath}`;
   // {imagePath , nameOfUser} as props
 
   const { layoutURL } = useContext(CustomizerContext);
