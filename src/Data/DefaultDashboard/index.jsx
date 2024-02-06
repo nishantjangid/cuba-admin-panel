@@ -126,7 +126,7 @@ export const WidgetsData18 = {
 
 export const WidgetsData9 = {
   title: 'Package1',
-  gros: 70,
+  gros: 20,
   // total: '$20',
   total: ( <span style={{color : "black"}}>$20</span>),
   color: 'success',
@@ -136,7 +136,7 @@ export const WidgetsData9 = {
 };
 export const WidgetsData10 = {
   title: 'Package2',
-  gros: 70,
+  gros: 50,
   // total: '$50',
   total : ( <span style={{color : "black"}}>$50</span>),
   color: 'success',
@@ -145,7 +145,7 @@ export const WidgetsData10 = {
 
 };export const WidgetsData11 = {
   title: 'Package3',
-  gros: 70,
+  gros: 100,
   // total: '$100',
   total : ( <span style={{color : "black"}}>$100</span>),
   color: 'success',
@@ -154,7 +154,7 @@ export const WidgetsData10 = {
 
 };export const WidgetsData12 = {
   title: 'Package4',
-  gros: 70,
+  gros: 200,
   // total: '$200',
   total : ( <span style={{color : "black"}}>$200</span>),
   color: 'success',
@@ -163,7 +163,7 @@ export const WidgetsData10 = {
 
 };export const WidgetsData13 = {
   title: 'Package5',
-  gros: 70,
+  gros: 500,
   // total: '$500',
   total: ( <span style={{color : "black"}}>$500</span>),
   color: 'success',
@@ -172,7 +172,7 @@ export const WidgetsData10 = {
 
 };export const WidgetsData14 = {
   title: 'Package6',
-  gros: 70,
+  gros: 800,
   // total: '$800',
   total : ( <span style={{color : "black"}}>$800</span>),
   color: 'success',
@@ -181,7 +181,7 @@ export const WidgetsData10 = {
 
 };export const WidgetsData15 = {
   title: 'Package7',
-  gros: 70,
+  gros: 1000,
   // total: '$1000',
   total : ( <span style={{color : "black"}}>$1000</span>),
   color: 'success',
@@ -190,7 +190,7 @@ export const WidgetsData10 = {
  
 };export const WidgetsData16 = {
   title: 'Package8',
-  gros: 70,
+  gros: 1500,
   // total: '$1500',
   total : ( <span style={{color : "black"}}>$1500</span>),
   color: 'success',

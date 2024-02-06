@@ -5,7 +5,7 @@ import Widgets2 from '../../Common/CommonWidgets/Widgets2';
 import Swal from 'sweetalert2'
 import { WidgetsData10, WidgetsData11, WidgetsData12, WidgetsData13, WidgetsData14, WidgetsData15, WidgetsData16, WidgetsData9 } from '../../../Data/DefaultDashboard';
 import { useAccount } from 'wagmi'
-import { buySlot,updateslot } from '../../../api/integrateConfig';
+import { buySlots,updateslot } from '../../../api/integrateConfig';
 import { useContractWrite } from 'wagmi'
 import MyContext from '../../../Context/MyContext';
 import { ABI, BUSDABI, BUSDcontractAddress, contractAddress } from '../../../blockchain';
@@ -32,18 +32,19 @@ const SlotActivation = () => {
     const { address} = useAccount();  
     
 
-    const handleCLick = async (total)=>{
-        const num = parseInt(total.replace('$' , ''), 10);
+    const handleCLick = async (gros)=>{
+        // const num = parseInt(total.replace('$' , ''), 10);
         // console.log(`handle click si clicked and the amount:s${num}s`)
+        console.log(`the gros value is : ${gros}`)
 
         let data = {
             userId : localStorage.getItem("userID"),   //  in order to get user id from this, user must first go to edit profile section because this is where user ID is set to localsotrage otherwise it might throw error
             address : address,
-            slotType : num
+            slotType : gros
         }
         try{
             console.log("data",data);
-        const response = await buySlot(data);
+        const response = await buySlots(data); // must read : this is calling the backend api for slots purchase. earlier it was buySlot(data)
         console.log("response",response);
         let amountInWei = Number(response.data.amount) * (10**18);
         let appr = await approve({args:[contractAddress,(amountInWei*2).toString()]});
@@ -82,30 +83,30 @@ const SlotActivation = () => {
                     <Col title='one can purchase this slot only when he was package of $20, $30, $80' >
                         <Widgets1 data={WidgetsData9} />
                     </Col>
-                    <Col title='one can purchase this slot only when he was package of $160' onClick={()=>{handleCLick(WidgetsData10.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $160' onClick={()=>{handleCLick(WidgetsData10.gros)}}>
                         <Widgets1 data={WidgetsData10} />
                     </Col>
-                    <Col title='one can purchase this slot only when he was package of $160' onClick={()=>{handleCLick(WidgetsData11.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $160' onClick={()=>{handleCLick(WidgetsData11.gros)}}>
                         <Widgets1 data={WidgetsData11} />
                     </Col>
-                    <Col title='one can purchase this slot only when he was package of $320' onClick={()=>{handleCLick(WidgetsData12.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $320' onClick={()=>{handleCLick(WidgetsData12.gros)}}>
                         <Widgets1 data={WidgetsData12} />
                     </Col>
                 </Row>
             </Col> 
             <Col xxl='auto' className='box-col-6'>
                 <Row>
-                    <Col title='one can purchase this slot only when he was package of $320' onClick={()=>{handleCLick(WidgetsData13.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $320' onClick={()=>{handleCLick(WidgetsData13.gros)}}>
                         <Widgets1 data={WidgetsData13} />
                     </Col>
 
-                    <Col title='one can purchase this slot only when he was package of $640' onClick={()=>{handleCLick(WidgetsData14.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $640' onClick={()=>{handleCLick(WidgetsData14.gros)}}>
                         <Widgets1 data={WidgetsData14} />
                     </Col>
-                    <Col title='one can purchase this slot only when he was package of $1280' onClick={()=>{handleCLick(WidgetsData15.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $1280' onClick={()=>{handleCLick(WidgetsData15.gros)}}>
                         <Widgets1 data={WidgetsData15} />
                     </Col>
-                    <Col title='one can purchase this slot only when he was package of $2560' onClick={()=>{handleCLick(WidgetsData16.total)}}>
+                    <Col title='one can purchase this slot only when he was package of $2560' onClick={()=>{handleCLick(WidgetsData16.gros)}}>
                         <Widgets1 data={WidgetsData16} />
                     </Col>
                 </Row>

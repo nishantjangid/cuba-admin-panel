@@ -98,7 +98,7 @@ export const updateProfile = async(data)=>{
 }
 
 
-export const buySlot = async(data)=>{       //working
+export const buySlots = async(data)=>{       
     return new Promise(async(resolve, reject)=>{
         try{
            const response = await axiosBase.post('api/users/buySlots' , data ,{
